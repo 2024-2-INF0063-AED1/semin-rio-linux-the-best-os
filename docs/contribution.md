@@ -1,11 +1,11 @@
 CONTRIBUTING.md
-Contributing to Robot Maze Project
+Contributing to Transfer Area Project
 
-Obrigado por contribuir ao projeto Robot Maze! Para mantermos o código organizado, consistente e fácil de colaborar, siga as diretrizes abaixo.
+Obrigado por contribuir ao projeto Transfer Area! Para mantermos o código organizado, consistente e fácil de colaborar, siga as diretrizes abaixo.
 1. Código em Inglês
 
-    Padronização em Inglês: Para garantir que o código seja acessível a uma comunidade ampla, todas as variáveis, funções, classes, comentários e commits devem estar em inglês.
-    Consistência: Mesmo que o projeto seja inicialmente em português, é importante manter a consistência para que ele possa crescer e receber contribuições de outros desenvolvedores ao redor do mundo.
+    Padronização em Inglês: Para garantir que o código seja acessível a uma comunidade ampla, todas as variáveis, funções e classes devem estar em inglês.
+    Commits e comentários: Para garantir melhor entendimento interno, os commits e comentários podem ser tanto em inglês quanto português.
 
 2. Fluxo de Trabalho com Branchs
 
