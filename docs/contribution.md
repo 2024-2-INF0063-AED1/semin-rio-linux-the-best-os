@@ -24,19 +24,19 @@ Usar branchs permite que cada nova funcionalidade, correção de bug ou ajuste s
 
 - Antes de começar uma nova funcionalidade, correção ou ajuste, crie uma branch separada. Use um nome descritivo para a branch, como feature/maze-navigation, bugfix/collision-detection, ou docs/update-readme.
 
-    git checkout -b feature/maze-navigation
+        git checkout -b feature/maze-navigation
 
 #### Faça Commits Frequentes e Significativos
 
 - Commits pequenos e frequentes ajudam no acompanhamento do progresso. Certifique-se de usar mensagens de commit claras e descritivas em inglês.
 
-    git commit -m "Add basic maze navigation logic"
+        git commit -m "Add basic maze navigation logic"
 
 #### Push para a Branch Remota
 
 - Envie sua branch para o repositório remoto, criando um histórico de alterações disponível para revisão.
 
-    git push origin feature/maze-navigation
+        git push origin feature/maze-navigation
 
 #### Crie uma Pull Request (PR)
 
@@ -46,8 +46,8 @@ Usar branchs permite que cada nova funcionalidade, correção de bug ou ajuste s
 
 - Se a branch main receber novas alterações durante o desenvolvimento, faça merge da main na sua branch local para manter seu código atualizado:
 
-    git checkout nome-da-branch-que-voce-esta-trabalhando #esse comando é para garantir que você esta na branch correta
-    git merge main
+        git checkout nome-da-branch-que-voce-esta-trabalhando #esse comando é para garantir que você esta na branch correta
+        git merge main
 
 Após Aprovação, Faça Merge para main
 
@@ -57,8 +57,8 @@ Após Aprovação, Faça Merge para main
 
 - Após o merge, apague a branch local e remota para manter o repositório organizado:
 
-    git branch -d feature/maze-navigation
-    git push origin --delete feature/maze-navigation
+        git branch -d feature/maze-navigation
+        git push origin --delete feature/maze-navigation
 
 ## 3. Diretrizes Gerais
 
