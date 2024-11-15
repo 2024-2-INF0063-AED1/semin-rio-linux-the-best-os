@@ -4,8 +4,8 @@
 Obrigado por contribuir ao projeto Transfer Area! Para mantermos o código organizado, consistente e fácil de colaborar, siga as diretrizes abaixo.
 ## 1. Código em Inglês
 
-    - Padronização em Inglês: Para garantir que o código seja acessível a uma comunidade ampla, todas as variáveis, funções e classes devem estar em inglês.
-    - Commits e comentários: Para garantir melhor entendimento interno, os commits e comentários podem ser tanto em inglês quanto português.
+- Padronização em Inglês: Para garantir que o código seja acessível a uma comunidade ampla, todas as variáveis, funções e classes devem estar em inglês.
+- Commits e comentários: Para garantir melhor entendimento interno, os commits e comentários podem ser tanto em inglês quanto português.
 
 ## 2. Fluxo de Trabalho com Branchs
 
