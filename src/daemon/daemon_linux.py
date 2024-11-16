@@ -4,21 +4,38 @@ import os
 def run_daemon():
     print("Run in linux")
 
+def init_socket():
 # Criação do Socket
-s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    client_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 
-# Path do arquivo socket
-s_path = "/tmp/arq_socket"
+    try:
+    # Path do arquivo socket
+        client_socket_path = "/tmp/arq_socket"
 
-# Verificação se arq_socket ja existe
-if os.path.exists(s_path):
-    os.remove(s_path)
+    # Vinculação
+        client_socket.connect(client_socket_path)
+    
+    # Mensagem inicial
+        menssage = 'Init Connection'
+        client_socket.send(menssage.encode())
+        print("Enviada: ", menssage)
 
-# Vinculação
-s.bind((s_path))
+    # Resposta Servidor
+        response = client_socket.recv(1024)
+        print("Resposta: ", response.decode)
 
-# Numero de conexoes
-s.listen(1)
+    except FileNotFoundError:
+        print(f"Arquivo {client_socket_path} não encontrado")
 
-# Aceita a conexão
-conn, adrr = s.accept()
+    except ConnectionRefusedError:
+        print("Falha em se conectar com o servidor")
+
+    except Exception as e:
+        print("Erro: ", e)
+
+    finally:
+        client_socket.close()
+        print("Conexão fechada com o servidor")
+
+
+

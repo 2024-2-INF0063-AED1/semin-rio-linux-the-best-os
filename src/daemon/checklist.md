@@ -1,12 +1,11 @@
 1. Estrutura Geral
 
-Criar o arquivo daemon.py.
-Identificar as bibliotecas necessárias para:
+- [] Criar o arquivo daemon.py.
+- [] Identificar as bibliotecas necessárias para:
 
 Monitorar eventos do sistema operacional (como copiar texto no clipboard).
 Comunicação via socket.
-
-        Log para debugar problemas futuros.
+Log para debugar problemas futuros.
 
 2. Funcionalidades do Daemon
 
