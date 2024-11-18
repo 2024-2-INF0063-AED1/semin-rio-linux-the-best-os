@@ -158,7 +158,7 @@ int copiarString(Node* cabeca) {
             capacity = (int) (strlen(nome) + 128);
             char *temp = realloc(nome, capacity * sizeof(char));
             if (temp == NULL) {
-                printf("Ocorreu algum problema na realocação\n");
+                fprintf(stderr, "Ocorreu algum problema na realocação\n");
                 free(nome);
                 return 0;
             }
@@ -228,7 +228,7 @@ void selectToPaste(List* x) {
     }
 
     if(x->start == NULL) {
-        printf("Nao ha elementos na area de transferencia para serem colados.\n Favor copiar algum.");
+        fprintf(stderr, "Nao ha elementos na area de transferencia para serem colados.\n Favor copiar algum.");
         return;
     }
 
@@ -264,7 +264,7 @@ void paste() {
     if(selected) {
         printf("Area de transferencia:\n%s\n\n", selected->data.str);
     } else {
-        printf("\nFavor inicializar a area de transferencia.\n\n");
+        fprintf(stderr, "\nFavor inicializar a area de transferencia.\n\n");
     }
 }
 
@@ -272,7 +272,7 @@ void delete(List* x, int index) {
     int found;
 
     if(index <= 0) {
-        printf("Indice passado deve ser maior do que zero.");
+        fprintf(stderr, "Indice passado deve ser maior do que zero.");
         return;
     }
 
