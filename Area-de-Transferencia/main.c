@@ -23,6 +23,7 @@ typedef struct node {
 
 typedef struct list {
     Node* start;
+    // Node* selected;
     Node* end;
 } List;
 
@@ -34,14 +35,13 @@ List* create();
 Node* createAreaTransferencia();
 void insertStart(List* x);
 void insertEnd(List* x);
-void delete(List* x);
+void delete(List* x, int index);
 void clean(List* x);
 void show(List* x);
 
 int copiarString(Node* cabeca);
 void selectToPaste(List* x);
 void paste();
-ssize_t my_getline(char **lineptr, size_t *n, FILE *stream);
 
 int main(void)
 {
@@ -49,12 +49,20 @@ int main(void)
     selected = createAreaTransferencia();
     insertStart(x);
     // paste();
-    insertEnd(x);
+    // insertEnd(x);
     insertEnd(x);
     // paste();
 
-    selectToPaste(x);
-    paste();
+    // selectToPaste(x);
+    // paste();
+
+    int index;
+    scanf("Digite um indice para apaga-lo: %d", &index);
+    delete(x, index);
+    show(x);
+
+    clean(x);
+    show(x);
     return 0;
 }
 
@@ -163,25 +171,33 @@ int copiarString(Node* cabeca) {
     nome[size - 1] = '\0';
     nome[size - 2] = '\0';
 
-    // Aloca memória para cabeca->data.str
-    cabeca->data.str = (char*)malloc((size + 1) * sizeof(char));
-    if (cabeca->data.str == NULL) {
-        fprintf(stderr, "Erro na alocacao de memoria para a string do no\n");
+    if(selected) {
+        // Aloca memória útil para cabeca->data.str
+        cabeca->data.str = (char*)malloc(strlen(nome) * sizeof(char));
+        if (cabeca->data.str == NULL) {
+            fprintf(stderr, "Erro na alocacao de memoria para a string do no\n");
+            free(nome);
+            return 0;
+        }
+    } else {
         free(nome);
         return 0;
     }
-    strcpy(cabeca->data.str, nome);
 
-    if(selected) {
-        if (selected->data.str == NULL || strcmp(selected->data.str, nome) != 0) {
-            selected->data.str = (char*)realloc(selected->data.str, ((int) (strlen(nome) + 1)) * sizeof(char));
-            if (selected->data.str == NULL) {
-                fprintf(stderr, "Erro na realocacao de memoria para a area de transferencia\n");
-                free(nome);
-                return 0;
-            }
-            strcpy(selected->data.str, nome);
+    // Realoca memoria útil para "selected", contendo apenas caracteres != '\0'
+    if (selected->data.str == NULL || strcmp(selected->data.str, nome) != 0) {
+        selected->data.str = (char*) realloc(selected->data.str, (int) strlen(nome) * sizeof(char));
+        if (selected->data.str == NULL) {
+            fprintf(stderr, "Erro na realocacao de memoria para a area de transferencia\n");
+            free(nome);
+            return 0;
         }
+        strcpy(selected->data.str, nome);
+        strcpy(cabeca->data.str, nome);
+    } else {
+        printf("Houve duplicacao. Favor digitar uma string diferente da anterior.\n");
+        free(nome);
+        return 0;
     }
 
     free(nome);
@@ -189,13 +205,16 @@ int copiarString(Node* cabeca) {
 }
 
 void show(List* x) {
-    if (x->start == NULL) {
+    if (x->start == NULL || x == NULL) {
         printf("Estado da lista: Lista vazia!\n");
         return;
     }
     aux = x->start;
     int i = 1;
-    printf("Estado da lista:\n");
+    if(aux->data.str != NULL) {
+        printf("Estado da lista:\n");
+    }
+
     while (aux != NULL) {
         printf("%d  -   %s\n", i, aux->data.str);
         aux = aux->next;
@@ -248,5 +267,91 @@ void paste() {
     } else {
         printf("\nFavor inicializar a area de transferencia.\n\n");
     }
+}
+
+void delete(List* x, int index) {
+    int found;
+
+    if(index <= 0) {
+        printf("Indice passado deve ser maior do que zero.");
+        return;
+    }
+
+    if(x->start == NULL) {
+        printf("Lista vazia!\n");
+        return;
+    }
+
+    show(x);
+
+    aux = x->start;
+    int i = 1;
+    printf("Estado da lista:\n");
+    while (i != index && aux != NULL) {
+        prev = aux;
+        aux = aux->next;
+        i++;
+    }
+
+    if(aux == NULL) {
+        printf("Indice invalido.\n");
+        return;
+    }
+
+    found = 1;
+
+    if(aux == x->start) {
+        // inicio apontara para o segundo elemento da lista ou para NULL
+        // caso o elemento removido seja o unico elemento da lista
+        x->start = aux->next;
+        // desalocar espaço da string.
+        free(aux->data.str);
+        aux->data.str = NULL;
+        // desalocamos o espaco para onde aux apontava
+        free(aux);
+        // aux aponta para o inicio da lista
+        aux = x->start;
+    }
+    // Se for o ultimo da lista
+    else if (aux == x->end) {
+        // o elemento anterior a fim, no atributo prox apontará para NULL
+        prev->next = NULL;
+        // fim aponta para o elemento apontado por anterior
+        x->end = prev;
+        // desalocar espaço da string.
+        free(aux->data.str);
+        aux->data.str = NULL;
+        // Desalocamos o espaco para onde aux apontava
+        free(aux);
+        // Como era o ultmo elemento da lista, aux recebe NULL
+        aux = NULL;
+    }
+    // Se nao for nem o primeiro nem o ultimo da lista
+    else {
+        // o elemento anterior ao elemento a ser removido, no atributo prox apontará para o elemento
+        // para qual aux->next apontava
+        prev->next = aux->next;
+        // desalocar espaço da string.
+        free(aux->data.str);
+        aux->data.str = NULL;
+        // Desalocamos o espaco para onde aux apontava
+        free(aux);
+        // aux aponta para o proximo elemento da lista, aquele que era o seguinte ao numero removido
+        aux = prev->next;
+    }
+
+    if(found) {
+        printf("No deletado com sucesso.\n");
+    } else {
+        printf("No nao foi possivel ser deletado.\n");
+    }
+}
+
+void clean(List* x) {
+    while(x->start != NULL) {
+        delete(x, 1);
+    }
+
+    printf("Area de transferencia limpa com sucesso.\n");
 }
 

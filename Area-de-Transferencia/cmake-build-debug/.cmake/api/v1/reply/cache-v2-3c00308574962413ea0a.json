@@ -11,7 +11,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/ryanr/CLionProjects/Area-de-Transferencia/cmake-build-debug"
+			"value" : "C:/Users/ryanr/Documents/GitHub/semin-rio-linux-the-best-os/Area-de-Transferencia/cmake-build-debug"
 		},
 		{
 			"name" : "Area_de_Transferencia_IS_TOP_LEVEL",
@@ -35,7 +35,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/ryanr/CLionProjects/Area-de-Transferencia"
+			"value" : "C:/Users/ryanr/Documents/GitHub/semin-rio-linux-the-best-os/Area-de-Transferencia"
 		},
 		{
 			"name" : "CMAKE_ADDR2LINE",
@@ -91,7 +91,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/ryanr/CLionProjects/Area-de-Transferencia/cmake-build-debug"
+			"value" : "c:/Users/ryanr/Documents/GitHub/semin-rio-linux-the-best-os/Area-de-Transferencia/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -467,7 +467,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/ryanr/CLionProjects/Area-de-Transferencia/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/ryanr/Documents/GitHub/semin-rio-linux-the-best-os/Area-de-Transferencia/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -539,7 +539,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/ryanr/CLionProjects/Area-de-Transferencia"
+			"value" : "C:/Users/ryanr/Documents/GitHub/semin-rio-linux-the-best-os/Area-de-Transferencia"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",

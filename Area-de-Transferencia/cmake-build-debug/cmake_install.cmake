@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/ryanr/CLionProjects/Area-de-Transferencia
+# Install script for directory: C:/Users/ryanr/Documents/GitHub/semin-rio-linux-the-best-os/Area-de-Transferencia
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/ryanr/CLionProjects/Area-de-Transferencia/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/ryanr/Documents/GitHub/semin-rio-linux-the-best-os/Area-de-Transferencia/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

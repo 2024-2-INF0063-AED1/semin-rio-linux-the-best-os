@@ -1,3 +1,3 @@
-C:/Users/ryanr/CLionProjects/Area-de-Transferencia/cmake-build-debug/CMakeFiles/Area_de_Transferencia.dir
-C:/Users/ryanr/CLionProjects/Area-de-Transferencia/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/ryanr/CLionProjects/Area-de-Transferencia/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/ryanr/Documents/GitHub/semin-rio-linux-the-best-os/Area-de-Transferencia/cmake-build-debug/CMakeFiles/Area_de_Transferencia.dir
+C:/Users/ryanr/Documents/GitHub/semin-rio-linux-the-best-os/Area-de-Transferencia/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/ryanr/Documents/GitHub/semin-rio-linux-the-best-os/Area-de-Transferencia/cmake-build-debug/CMakeFiles/rebuild_cache.dir
