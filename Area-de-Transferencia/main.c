@@ -23,7 +23,6 @@ typedef struct node {
 
 typedef struct list {
     Node* start;
-    // Node* selected;
     Node* end;
 } List;
 
