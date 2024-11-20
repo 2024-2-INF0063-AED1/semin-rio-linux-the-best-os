@@ -18,6 +18,7 @@ typedef struct string {
 
 typedef struct node {
     String data;
+    int isFixed;
     struct node* next;
 } Node;
 
@@ -41,6 +42,10 @@ void show(List* x);
 int copiarString(Node* cabeca);
 void selectToPaste(List* x);
 void paste();
+char* lerString(char* string);
+void pinAndSave(List* x);
+void pinnedItensRoutine(List* x);
+int findNode(List* x, int index);
 
 int main(void)
 {
@@ -48,20 +53,22 @@ int main(void)
     selected = createAreaTransferencia();
     insertStart(x);
     // paste();
-    // insertEnd(x);
+    insertEnd(x);
     insertEnd(x);
     // paste();
 
     // selectToPaste(x);
     // paste();
 
-    int index;
-    scanf("Digite um indice para apaga-lo: %d", &index);
-    delete(x, index);
-    show(x);
+    pinAndSave(x);
 
-    clean(x);
-    show(x);
+    // int index;
+    // scanf("Digite um indice para apaga-lo: %d", &index);
+    // delete(x, index);
+    // show(x);
+
+    // clean(x);
+    // show(x);
     return 0;
 }
 
@@ -139,72 +146,106 @@ void insertEnd(List* x) {
     printf("Um novo no foi adicionado ao fim da lista.\n");
 }
 
+// char* lerString(char* string) {
+//     size_t capacity = 128;  // Tamanho inicial da capacidade
+//     size_t size = 0;            // typedef unsigned long long size_t
+//     char* string = malloc(capacity * sizeof(char));
+//     if (string == NULL) {
+//         fprintf(stderr, "Erro na alocacao de memoria inicial\n");
+//         return 0;
+//     }
+//
+//     int ch;
+//     while ((ch = getchar()) != EOF) {
+//         if (ch == '\n' && size > 0 && string[size - 1] == '\n'&& string[size - 2] == '\n') {
+//             break;
+//         }
+//         string[size++] = ch;
+//         if (size >= capacity) {
+//             capacity = (int) (strlen(string) + 128);
+//             char* temp = realloc(string, capacity * sizeof(char));
+//             if (temp == NULL) {
+//                 fprintf(stderr, "Ocorreu algum problema na realocação\n");
+//                 free(string);
+//                 return 0;
+//             }
+//             string = temp;
+//         }
+//     }
+//
+//     string[size] = '\0';
+//     string[size - 1] = '\0';
+//     string[size - 2] = '\0';
+//
+//     return string;
+// }
+
 int copiarString(Node* cabeca) {
     size_t capacity = 128;  // Tamanho inicial da capacidade
     size_t size = 0;            // typedef unsigned long long size_t
-    char *nome = (char*)malloc(capacity * sizeof(char));
-    if (nome == NULL) {
+    char* string = malloc(capacity * sizeof(char));
+    if (string == NULL) {
         fprintf(stderr, "Erro na alocacao de memoria inicial\n");
         return 0;
     }
 
     int ch;
     while ((ch = getchar()) != EOF) {
-        if (ch == '\n' && size > 0 && nome[size - 1] == '\n'&& nome[size - 2] == '\n') {
+        if (ch == '\n' && size > 0 && string[size - 1] == '\n'&& string[size - 2] == '\n') {
             break;
         }
-        nome[size++] = ch;
+        string[size++] = ch;
         if (size >= capacity) {
-            capacity = (int) (strlen(nome) + 128);
-            char *temp = realloc(nome, capacity * sizeof(char));
+            capacity = (int) (strlen(string) + 128);
+            char* temp = realloc(string, capacity * sizeof(char));
             if (temp == NULL) {
                 fprintf(stderr, "Ocorreu algum problema na realocação\n");
-                free(nome);
+                free(string);
                 return 0;
             }
-            nome = temp;
+            string = temp;
         }
     }
 
-    nome[size] = '\0';
-    nome[size - 1] = '\0';
-    nome[size - 2] = '\0';
+    string[size] = '\0';
+    string[size - 1] = '\0';
+    string[size - 2] = '\0';
 
     if(selected) {
         // Aloca memória útil para cabeca->data.str
-        cabeca->data.str = (char*)malloc(strlen(nome) * sizeof(char));
+        cabeca->data.str = (char*)malloc(strlen(string) * sizeof(char));
         if (cabeca->data.str == NULL) {
             fprintf(stderr, "Erro na alocacao de memoria para a string do no\n");
-            free(nome);
+            free(string);
             return 0;
         }
     } else {
-        free(nome);
+        free(string);
         return 0;
     }
 
     // Realoca memoria útil para "selected", contendo apenas caracteres != '\0'
-    if (selected->data.str == NULL || strcmp(selected->data.str, nome) != 0) {
-        selected->data.str = (char*) realloc(selected->data.str, (int) strlen(nome) * sizeof(char));
+    if (selected->data.str == NULL || strcmp(selected->data.str, string) != 0) {
+        selected->data.str = (char*) realloc(selected->data.str, (int) strlen(string) * sizeof(char));
         if (selected->data.str == NULL) {
             fprintf(stderr, "Erro na realocacao de memoria para a area de transferencia\n");
-            free(nome);
+            free(string);
             return 0;
         }
-        strcpy(selected->data.str, nome);
-        strcpy(cabeca->data.str, nome);
+        strcpy(selected->data.str, string);
+        strcpy(cabeca->data.str, string);
     } else {
         printf("Houve duplicacao. Favor digitar uma string diferente da anterior.\n");
-        free(nome);
+        free(string);
         return 0;
     }
 
-    free(nome);
+    free(string);
     return 1;
 }
 
 void show(List* x) {
-    if (x->start == NULL || x == NULL) {
+    if (x->start == NULL) {
         printf("Estado da lista: Lista vazia!\n");
         return;
     }
@@ -244,6 +285,11 @@ void selectToPaste(List* x) {
         i++;
     }
 
+    // int index;
+    // if(findNode(x, index) != 0) {
+    //     printf("No encontrado com sucesso.");
+    // }
+
     if (aux != NULL) {
         if (selected->data.str != NULL) {
             free(selected->data.str);
@@ -268,9 +314,9 @@ void paste() {
     }
 }
 
+// esta apagando o primeiro elemento por padrao,
+// mesmo apos digitar um caractere não numérioco
 void delete(List* x, int index) {
-    int found;
-
     if(index <= 0) {
         fprintf(stderr, "Indice passado deve ser maior do que zero.");
         return;
@@ -296,8 +342,6 @@ void delete(List* x, int index) {
         printf("Indice invalido.\n");
         return;
     }
-
-    found = 1;
 
     if(aux == x->start) {
         // inicio apontara para o segundo elemento da lista ou para NULL
@@ -339,11 +383,7 @@ void delete(List* x, int index) {
         aux = prev->next;
     }
 
-    if(found) {
-        printf("No deletado com sucesso.\n");
-    } else {
-        printf("No nao foi possivel ser deletado.\n");
-    }
+    printf("No deletado com sucesso.\n");
 }
 
 void clean(List* x) {
@@ -354,3 +394,54 @@ void clean(List* x) {
     printf("Area de transferencia limpa com sucesso.\n");
 }
 
+void pinAndSave(List* x) {
+    FILE *arq;
+
+    int index = 0;
+    int op = 1;
+
+    arq = fopen("fixedItens.txt", "a");
+
+    while (op == 1){
+        index = findNode(x, 0);
+
+        if(aux != NULL && aux->isFixed != 1) {
+            fprintf(arq, "%d\t-\t%s\n", index, aux->data.str);
+            aux->isFixed = 1;
+        } else {
+            fprintf(stderr,"\nItem ja consta salvo.");
+        }
+
+        printf("\nContinuar? (0-nao / 1-sim): ");
+        scanf("%d", &op);
+
+        if(op == 1){
+            fputs("\n", arq);
+            index++;
+        }
+    }
+    fclose(arq);
+}
+
+int findNode(List* x, int index) {
+    show(x);
+    while(index <= 0) {
+        printf("Digite um indice para fixar.\nItems fixados nao serao deletados da lista ou perdidos no reinicio do sistema.\n");
+        scanf("%d", &index);
+    }
+
+    aux = x->start;
+    int i = 1;
+    printf("Estado da lista:\n");
+    while (i != index && aux != NULL) {
+        prev = aux;
+        aux = aux->next;
+        i++;
+    }
+
+    if(aux != NULL) {
+        printf("Item encontrado.");
+    }
+
+    return index;
+}
