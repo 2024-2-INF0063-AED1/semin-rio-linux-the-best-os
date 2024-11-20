@@ -42,7 +42,6 @@ void show(List* x);
 int copiarString(Node* cabeca);
 void selectToPaste(List* x);
 void paste();
-char* lerString(char* string);
 void pinAndSave(List* x);
 void pinnedItensRoutine(List* x);
 int findNode(List* x, int index);
@@ -145,40 +144,6 @@ void insertEnd(List* x) {
     }
     printf("Um novo no foi adicionado ao fim da lista.\n");
 }
-
-// char* lerString(char* string) {
-//     size_t capacity = 128;  // Tamanho inicial da capacidade
-//     size_t size = 0;            // typedef unsigned long long size_t
-//     char* string = malloc(capacity * sizeof(char));
-//     if (string == NULL) {
-//         fprintf(stderr, "Erro na alocacao de memoria inicial\n");
-//         return 0;
-//     }
-//
-//     int ch;
-//     while ((ch = getchar()) != EOF) {
-//         if (ch == '\n' && size > 0 && string[size - 1] == '\n'&& string[size - 2] == '\n') {
-//             break;
-//         }
-//         string[size++] = ch;
-//         if (size >= capacity) {
-//             capacity = (int) (strlen(string) + 128);
-//             char* temp = realloc(string, capacity * sizeof(char));
-//             if (temp == NULL) {
-//                 fprintf(stderr, "Ocorreu algum problema na realocação\n");
-//                 free(string);
-//                 return 0;
-//             }
-//             string = temp;
-//         }
-//     }
-//
-//     string[size] = '\0';
-//     string[size - 1] = '\0';
-//     string[size - 2] = '\0';
-//
-//     return string;
-// }
 
 int copiarString(Node* cabeca) {
     size_t capacity = 128;  // Tamanho inicial da capacidade
@@ -432,7 +397,6 @@ int findNode(List* x, int index) {
 
     aux = x->start;
     int i = 1;
-    printf("Estado da lista:\n");
     while (i != index && aux != NULL) {
         prev = aux;
         aux = aux->next;
@@ -441,6 +405,8 @@ int findNode(List* x, int index) {
 
     if(aux != NULL) {
         printf("Item encontrado.");
+    } else {
+        fprintf(stderr, "Item nao encontrado.\n");
     }
 
     return index;
