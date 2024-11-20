@@ -1,8 +1,10 @@
 #include "server.h"
 
+int server_socket;
+
 int start_server() {
     //Criar o socket
-    server_socket = socket(AF_UNIX, SOCK_STREAM, 0) //Arg 1: Familia do Socket, tipo de socket tcp ou udp e 0 para protocolo padrao
+    server_socket = socket(AF_UNIX, SOCK_STREAM, 0); //Arg 1: Familia do Socket, tipo de socket tcp ou udp e 0 para protocolo padrao
 
     if (server_socket < 0) { //Verificação de erro 
         perror("Erro na criacao do server_socket.");
@@ -16,7 +18,7 @@ int start_server() {
     const char* socket_path = "/tmp/arq_socket";
     strcpy(server_address.sun_path, socket_path); //Caminho do endereço
  
-    if(bind(server_socket, (struct sockaddrr *)&server_address, sizeof(server_address)) < 0) { //Vinculção e verificação se houve erro ao vincular
+    if(bind(server_socket, (struct sockaddr *)&server_address, sizeof(server_address)) < 0) { //Vinculção e verificação se houve erro ao vincular
         perror("Erro ao vincular o server_socket");
         return -1;
         // Arg: Socket para vincular, endereço em forma de ponteiro para estrutura de socket de endereço e o tamanho do endereço
