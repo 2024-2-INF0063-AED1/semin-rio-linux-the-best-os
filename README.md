@@ -37,7 +37,7 @@ Usuários frequentemente enfrentam dificuldades para gerenciar o histórico de i
    - Um artigo introdutório sobre programação com sockets em Python, incluindo exemplos práticos.
      
 8. **Artigo:** [Manipulação de arquivos em C — como abrir e fechar arquivos e escrever algo neles](https://www.freecodecamp.org/portuguese/news/manipulacao-de-arquivos-em-c-como-abrir-e-fechar-arquivos-e-escrever-algo-neles/)
-   - Um artigo que trata de abrir, escrever e fechar arquivos .txt em C
+   - Um artigo que trata de abrir, escrever, ler e fechar arquivos .txt em C
      
 9. **Artigo:** [How much memory does a call to ‘malloc’ allocate?](https://lemire.me/blog/2024/06/27/how-much-memory-does-a-call-to-malloc-allocates/)
    - Artigo que discute o funcionamento da função malloc com mais detalhes
