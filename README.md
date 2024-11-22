@@ -55,7 +55,7 @@ Neste projeto, o "dataset" é composto pelos itens copiados pelo usuário em tem
 Os métodos principais incluem:  
 1. Captura automática de eventos de `CTRL+C`.  
 2. Comunicação cliente-servidor via sockets.  
-3. Armazenamento dinâmico em listas ligadas.  
+3. Armazenamento dinâmico em listas ligadas com nó descritor.  
 4. Planejamento para integração de árvores de busca para otimização.  
 
 ### **Avaliação**  
