@@ -4,6 +4,7 @@ import signal
 import subprocess
 import time
 import sys
+import clipboardManager.clipboard_manager_linux
 
 def run_daemon():
     print("Inicializando cliente...")
@@ -48,19 +49,6 @@ def init_socket():
         client_socket.close()
         print("Conexão com o servidor encerrada.")
 
-def get_clipboard_content():
-    try:
-        result = subprocess.check_output(['xclip', '-selection', 'clipboard', '-o'])
-        return result.decode('utf-8').strip()  # Remove os espaços extras
-    except subprocess.CalledProcessError:
-        return None  # Caso não consiga pegar o conteúdo do clipboard
-
-def handle_signal(sig, frame):
-    clipboard_content = get_clipboard_content()  # Captura o conteúdo copiado
-    if clipboard_content:
-        send_to_server(clipboard_content)
-    else:
-        print("Nenhum conteúdo copiado encontrado!")
 
 def send_to_server(content):
     client_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -89,8 +77,8 @@ def daemonize():
     os.umask(0)  # Configura permissões dos arquivos do daemon
 
     # Ignorar sinais de controle do terminal (como SIGINT)
-    signal.signal(signal.SIGINT, handle_signal)
-    signal.signal(signal.SIGTERM, handle_signal)
+    signal.signal(signal.SIGINT, clipboardManager.clipboard_manager_linux.handle_signal())
+    signal.signal(signal.SIGTERM, clipboardManager.clipboard_manager_linux.handle_signal())
 
     # Ficar em um loop escutando o sinal SIGINT
     while True:
