@@ -1,12 +1,16 @@
 import socket
 import os
+import signal
+import subprocess
+import time
+import sys
 
 def run_daemon():
     print("Inicializando cliente...")
     
-    init_socket();
-    # Aqui você pode adicionar a lógica para iniciar o daemon específico para Linux, se necessário.
-    # Exemplo: subprocess.call(["systemctl", "start", "meu_daemon.service"])
+    init_socket()
+    daemonize()
+
 
 def init_socket():
     # Criação do Socket
@@ -44,5 +48,51 @@ def init_socket():
         client_socket.close()
         print("Conexão com o servidor encerrada.")
 
+def get_clipboard_content():
+    try:
+        result = subprocess.check_output(['xclip', '-selection', 'clipboard', '-o'])
+        return result.decode('utf-8').strip()  # Remove os espaços extras
+    except subprocess.CalledProcessError:
+        return None  # Caso não consiga pegar o conteúdo do clipboard
 
+def handle_signal(sig, frame):
+    clipboard_content = get_clipboard_content()  # Captura o conteúdo copiado
+    if clipboard_content:
+        send_to_server(clipboard_content)
+    else:
+        print("Nenhum conteúdo copiado encontrado!")
+
+def send_to_server(content):
+    client_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    try:
+        client_socket.connect('/tmp/arq_socket')
+        command = f"COPY {content}"
+        client_socket.send(command.encode())
+        print(f"Comando enviado: {command}")
+
+        # Esperar resposta do servidor
+        response = client_socket.recv(1024)
+        print(f"Resposta do servidor: {response.decode()}")
+
+    except Exception as e:
+        print(f"Erro ao conectar ao servidor: {e}")
+    finally:
+        client_socket.close()
+
+# Configurar o daemon para rodar em segundo plano
+def daemonize():
+    pid = os.fork()
+    if pid > 0:
+        sys.exit()  # O processo pai termina, deixando o daemon rodando
+
+    os.setsid()  # Criar um novo grupo de sessão
+    os.umask(0)  # Configura permissões dos arquivos do daemon
+
+    # Ignorar sinais de controle do terminal (como SIGINT)
+    signal.signal(signal.SIGINT, handle_signal)
+    signal.signal(signal.SIGTERM, handle_signal)
+
+    # Ficar em um loop escutando o sinal SIGINT
+    while True:
+        time.sleep(1)  # Esperar pela interrupção do SIGINT
 
