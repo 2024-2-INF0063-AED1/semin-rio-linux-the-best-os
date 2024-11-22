@@ -46,7 +46,7 @@ Usuários frequentemente enfrentam dificuldades para gerenciar o histórico de i
 11. **Artigo:** [Como faço para guardar uma string com tamanho indefinido sem utilizar memória extra](https://pt.stackoverflow.com/questions/175529/como-faço-para-guardar-uma-string-com-tamanho-indefinido-numa-estrutura)
    - Artigo que trata da leitura de string de tamanho desconhecido, dando ênfase ao uso adequado de buffers e a função strlen(), ideal para o entendimento do código, que implementa na função realloc().
 12. **Artigo:** [How does the EOF macro work with getchar?](https://stackoverflow.com/questions/34816138/how-does-the-eof-macro-work-with-getchar)
-   - Artigo que trata da macro EOF, uma macro que é a solução implementada para a leitura indefinida de caracteres, teoricamente, para além de uma segunda solução implementada no código.
+   - Artigo que trata da macro nativa EOF, uma macro que é a solução implementada para a leitura indefinida de caracteres, teoricamente, além de uma segunda solução implementada no código.
 
 ### **Dataset**  
 Neste projeto, o "dataset" é composto pelos itens copiados pelo usuário em tempo real, armazenados inicialmente em uma lista ligada e, futuramente, em arquivos persistentes.  
