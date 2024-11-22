@@ -1,7 +1,7 @@
 # Gerenciador Multiplataforma de Histórico de Clipboard  
 
 **Autores:** 
-- Enzo Daniel Marinho,
+- Enzo Daniel Marinho
 - Ryan Ribeiro Rodrigues
 - Ian Azevedo de Carvalho
 
