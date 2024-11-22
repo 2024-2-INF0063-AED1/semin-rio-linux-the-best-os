@@ -2,6 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef _WIN32
+    #include <Windows.h>
+#elif __linux__
+    #include <sys/sysinfo.h>
+#else
+// Dá mensagem de erro informando que o sistemas não é suportado.
+    #error "Sistema nao suportado."
+#endif
+
 // Não há um número fixo de caracteres porque a área de transferência do Windows 10
 // armazena dados em bytes, e o tamanho exato varia com base na codificação
 // dos caracteres (por exemplo, UTF-8 ou UTF-16) e no tipo de dados (texto, imagem, etc.).
@@ -18,7 +27,7 @@ typedef struct string {
 
 typedef struct node {
     String data;
-    int isFixed;
+    int isPinned;
     struct node* next;
 } Node;
 
@@ -42,32 +51,41 @@ void show(List* x);
 int copiarString(Node* cabeca);
 void selectToPaste(List* x);
 void paste();
+
 void pinAndSave(List* x);
 void pinnedItensRoutine(List* x);
 int findNode(List* x, int index);
 
+void obterMemoriaTotalWindows(void);
+int verificarLimiarMemoriaWindows(void);
+void rotinaApagarInicio(List* x);
+
 int main(void)
 {
+    #ifdef _WIN32
+        SetConsoleOutputCP(CP_UTF8);
+    #endif
+
     List* x = create();
     selected = createAreaTransferencia();
+
+    printf("Antes da inserção: \n");
+    obterMemoriaTotalWindows();
+
+    if(verificarLimiarMemoriaWindows()) {
+        printf("\nPode alocar memoria.");
+    }
+
     insertStart(x);
-    // paste();
     insertEnd(x);
     insertEnd(x);
-    // paste();
+    printf("Depois da inserção: \n");
+    obterMemoriaTotalWindows();
 
-    // selectToPaste(x);
-    // paste();
+    clean(x);
+    printf("Após clean: \n");
+    obterMemoriaTotalWindows();
 
-    pinAndSave(x);
-
-    // int index;
-    // scanf("Digite um indice para apaga-lo: %d", &index);
-    // delete(x, index);
-    // show(x);
-
-    // clean(x);
-    // show(x);
     return 0;
 }
 
@@ -102,7 +120,16 @@ void insertStart(List* x) {
         return;
     }
 
+    if(verificarLimiarMemoriaWindows() == 0) {
+        rotinaApagarInicio(x);
+    }
+
+    while(verificarLimiarMemoriaWindows() == -1) {
+        rotinaApagarInicio(x);
+    }
+
     node->data.str = NULL;  // Inicializa o ponteiro como NULL
+    node->isPinned = 0;     // Nao esta fixado o comentario, inicialmente
     printf("Insira uma string para se copiar:\n");
 
     if (!copiarString(node)) {
@@ -126,7 +153,16 @@ void insertEnd(List* x) {
         return;
     }
 
+    if(verificarLimiarMemoriaWindows() == 0) {
+        rotinaApagarInicio(x);
+    }
+
+    while(verificarLimiarMemoriaWindows() == -1) {
+        rotinaApagarInicio(x);
+    }
+
     node->data.str = NULL;  // Inicializa o ponteiro como NULL
+    node->isPinned = 0; // Nao esta fixado o comentario, inicialmente
     printf("Insira uma string para se copiar:\n");
 
     if (!copiarString(node)) {
@@ -250,11 +286,6 @@ void selectToPaste(List* x) {
         i++;
     }
 
-    // int index;
-    // if(findNode(x, index) != 0) {
-    //     printf("No encontrado com sucesso.");
-    // }
-
     if (aux != NULL) {
         if (selected->data.str != NULL) {
             free(selected->data.str);
@@ -279,8 +310,8 @@ void paste() {
     }
 }
 
-// esta apagando o primeiro elemento por padrao,
-// mesmo apos digitar um caractere não numérioco
+// Fix: esta apagando o primeiro elemento por padrao,
+// mesmo apos digitar um caractere não numérico
 void delete(List* x, int index) {
     if(index <= 0) {
         fprintf(stderr, "Indice passado deve ser maior do que zero.");
@@ -370,9 +401,9 @@ void pinAndSave(List* x) {
     while (op == 1){
         index = findNode(x, 0);
 
-        if(aux != NULL && aux->isFixed != 1) {
+        if(aux != NULL && aux->isPinned != 1) {
             fprintf(arq, "%d\t-\t%s\n", index, aux->data.str);
-            aux->isFixed = 1;
+            aux->isPinned = 1;
         } else {
             fprintf(stderr,"\nItem ja consta salvo.");
         }
@@ -411,3 +442,83 @@ int findNode(List* x, int index) {
 
     return index;
 }
+
+void rotinaApagarInicio(List* x) {
+    delete(x, 0);
+}
+
+void obterMemoriaTotalWindows(void) {
+
+    // Configurar o console para UTF-8
+    SetConsoleOutputCP(CP_UTF8);
+
+    MEMORYSTATUSEX memInfo;
+    memInfo.dwLength = sizeof(MEMORYSTATUSEX);
+
+    // unsigned long long int = %llu
+    if (GlobalMemoryStatusEx(&memInfo)) {
+        printf("Memória física total: %llu MB\n", memInfo.ullTotalPhys / (1024 * 1024));
+        printf("Memória física disponível: %llu MB\n", memInfo.ullAvailPhys / (1024 * 1024));
+        printf("Memória virtual total: %llu MB\n", memInfo.ullTotalPageFile / (1024 * 1024));
+        printf("Memória virtual disponível: %llu MB\n", memInfo.ullAvailPageFile / (1024 * 1024));
+    } else {
+        printf("Erro ao obter informações de memória.\n");
+    }
+}
+
+int verificarLimiarMemoriaWindows(void) {
+    // Devo realizar essa rotina e guardar esse valor inicial.
+    MEMORYSTATUSEX memInfo;
+    memInfo.dwLength = sizeof(MEMORYSTATUSEX);
+
+    unsigned long long int memTotal = memInfo.ullTotalPageFile / (1024 * 1024);
+    unsigned long long int memDisponivel = memInfo.ullAvailPageFile / (1024 * 1024);
+
+    if(memDisponivel >= 0.2 * memTotal) {
+        return 1;
+    }
+
+    if (memDisponivel <= 0.05 * memTotal) {
+        return -1;
+    }
+
+    return 0;
+}
+
+#ifdef __linux__
+void obterMemoriaTotalLinux(void) {
+    struct sysinfo info;
+
+    // Get system information
+    if (sysinfo(&info) == 0) {
+        // Print total memory (in bytes)
+        printf("Total RAM: %lu MB\n", info.totalram / (1024 * 1024));
+    } else {
+        perror("sysinfo");
+        return 1;
+    }
+
+    return 0;
+}
+
+int obterMemoriaRamDisponivelLinux(void) {
+    struct sysinfo info;
+
+    // Get system information
+    if (sysinfo(&info) == 0) {
+        // Print total memory (in bytes)
+        int mem = (int) info.totalram / (1024 * 1024);
+
+        if(mem < mem * 0.8) {
+            printf("Memoria RAM disponivel: %d", mem);
+            return 1;
+        } else {
+            printf("Memoria RAM critica, > 0.8: %d" mem);
+            return 0:
+        }
+    } else {
+        perror("sysinfo");
+        return 0;
+    }
+}
+#endif
