@@ -1,6 +1,9 @@
 # Gerenciador Multiplataforma de Histórico de Clipboard  
 
-**Autores:** Enzo Daniel Marinho, Ryan Ribeiro Rodrigues e Ian Azevedo de Carvalho
+**Autores:** 
+- Enzo Daniel Marinho,
+- Ryan Ribeiro Rodrigues
+- Ian Azevedo de Carvalho
 
 **Resumo:** Este projeto propõe a criação de um gerenciador multiplataforma de histórico de clipboard. Ele captura automaticamente o conteúdo copiado pelo usuário e o organiza em um histórico acessível e gerenciável. Utiliza sockets para comunicação cliente-servidor e implementa algoritmos otimizados para busca e armazenamento dinâmico dos itens. 
 
