@@ -117,6 +117,10 @@ void insertStart(List* x) {
     Node* node = (Node*)malloc(sizeof(Node));
     if (node == NULL) {
         fprintf(stderr, "Erro ao alocar memoria para o no.\n");
+        
+        while(verificarLimiarMemoriaWindows() == -1) {
+            rotinaApagarInicio(x);
+        }
         return;
     }
 
@@ -150,6 +154,10 @@ void insertEnd(List* x) {
     Node* node = (Node*)malloc(sizeof(Node));
     if (node == NULL) {
         fprintf(stderr, "Erro ao alocar memoria para o no.\n");
+
+        while(verificarLimiarMemoriaWindows() == -1) {
+            rotinaApagarInicio(x);
+        }
         return;
     }
 
