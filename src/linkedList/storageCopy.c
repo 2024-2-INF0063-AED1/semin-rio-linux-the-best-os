@@ -121,6 +121,7 @@ void insertStart(List* x) {
         while(verificarLimiarMemoriaWindows() == -1) {
             rotinaApagarInicio(x);
         }
+        insertStart(x);
         return;
     }
 
@@ -158,6 +159,7 @@ void insertEnd(List* x) {
         while(verificarLimiarMemoriaWindows() == -1) {
             rotinaApagarInicio(x);
         }
+        insertEnd(x);
         return;
     }
 
@@ -517,11 +519,11 @@ int obterMemoriaRamDisponivelLinux(void) {
         // Print total memory (in bytes)
         int mem = (int) info.totalram / (1024 * 1024);
 
-        if(mem < mem * 0.8) {
+        if(mem < mem * 0.2) {
             printf("Memoria RAM disponivel: %d", mem);
             return 1;
         } else {
-            printf("Memoria RAM critica, > 0.8: %d" mem);
+            printf("Memoria RAM critica, < 20%: %d" mem);
             return 0:
         }
     } else {
