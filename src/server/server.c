@@ -1,6 +1,38 @@
 #include "server.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <cjson/cJSON.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <unistd.h>
+
+#define SOCKET_PATH "/tmp/arq_socket"
+#define BUFFER_SIZE 1024
 
 int server_socket;
+
+void handle_message(const char *json_str) {
+    cJSON *json = cJSON_Parse(json_str);
+    if (json == NULL) {
+        printf("Erro ao interpretar JSON\n");
+        return;
+    }
+
+    const cJSON *action = cJSON_GetObjectItemCaseSensitive(json, "action");
+    const cJSON *data = cJSON_GetObjectItemCaseSensitive(json, "data");
+
+    if (cJSON_IsString(action) && cJSON_IsString(data)) {
+        if (strcmp(action->valuestring, "COPY") == 0) {
+            printf("Texto copiado recebido: %s\n", data->valuestring);
+            // Salvar ou processar o texto copiado aqui
+        } else {
+            printf("Ação não reconhecida: %s\n", action->valuestring);
+        }
+    }
+
+    cJSON_Delete(json);
+}
 
 int start_server() {
     //Criar o socket

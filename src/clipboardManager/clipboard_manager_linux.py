@@ -2,7 +2,7 @@ import subprocess
 import daemon.daemon_linux
 
 # Mover a função para ClipboarManager
-def handle_signal(sig, frame):
+def handle_signal():
     clipboard_content = get_clipboard_content()  # Captura o conteúdo copiado
     if clipboard_content:
         daemon.daemon_linux.send_to_server(clipboard_content)

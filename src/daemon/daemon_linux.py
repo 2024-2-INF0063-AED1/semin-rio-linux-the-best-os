@@ -4,7 +4,7 @@ import signal
 import subprocess
 import time
 import sys
-import clipboardManager.clipboard_manager_linux
+from clipboardManager.clipboard_manager_linux import handle_signal
 
 def run_daemon():
     print("Inicializando cliente...")
@@ -67,20 +67,32 @@ def send_to_server(content):
     finally:
         client_socket.close()
 
-# Configurar o daemon para rodar em segundo plano
 def daemonize():
+    """
+    Configura o processo para rodar em segundo plano como daemon.
+    """
     pid = os.fork()
     if pid > 0:
-        sys.exit()  # O processo pai termina, deixando o daemon rodando
+        # Processo pai termina, deixando o daemon rodando em segundo plano
+        sys.exit(0)
 
-    os.setsid()  # Criar um novo grupo de sessão
-    os.umask(0)  # Configura permissões dos arquivos do daemon
+    # Tornar o processo o líder de um novo grupo de sessão
+    os.setsid()
 
-    # Ignorar sinais de controle do terminal (como SIGINT)
-    signal.signal(signal.SIGINT, clipboardManager.clipboard_manager_linux.handle_signal())
-    signal.signal(signal.SIGTERM, clipboardManager.clipboard_manager_linux.handle_signal())
+    # Configurar permissões padrão de arquivos
+    os.umask(0)
 
-    # Ficar em um loop escutando o sinal SIGINT
+    # Redirecionar entrada, saída e erro padrão para /dev/null
+    sys.stdin = open('/dev/null', 'r')
+    sys.stdout = open('/dev/null', 'a+')
+    sys.stderr = open('/dev/null', 'a+')
+
+    # Ignorar sinais do terminal
+    signal.signal(signal.SIGINT, handle_signal())
+    signal.signal(signal.SIGTERM, handle_signal())
+
+    print("Daemon iniciado. Escutando sinais...")
+
+    # Loop infinito para manter o daemon ativo
     while True:
-        time.sleep(1)  # Esperar pela interrupção do SIGINT
-
+        time.sleep(1)
