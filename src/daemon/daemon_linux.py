@@ -1,10 +1,12 @@
 import socket
+import json
 import os
 import signal
 import subprocess
 import time
 import sys
-import clipboardManager.clipboard_manager_linux
+
+define SOCKET_PATH = "/tmp/arq_socket"
 
 def run_daemon():
     print("Inicializando cliente...")
@@ -18,12 +20,10 @@ def init_socket():
     client_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 
     try:
-        # Path do arquivo socket
-        client_socket_path = "/tmp/arq_socket"
 
         # Vinculação ao socket do servidor
         print("Tentando se conectar ao servidor...")
-        client_socket.connect(client_socket_path)
+        client_socket.connect(SOCKET_PATH)
         print("Conexão estabelecida com o servidor!")
 
         # Mensagem inicial
@@ -36,7 +36,7 @@ def init_socket():
         print("Resposta do servidor:", response.decode())  # Use decode() como função
 
     except FileNotFoundError:
-        print(f"Erro: Arquivo {client_socket_path} não encontrado. Verifique se o servidor está ativo.")
+        print(f"Erro: Arquivo {SOCKET_PATH} não encontrado. Verifique se o servidor está ativo.")
 
     except ConnectionRefusedError:
         print("Erro: Falha em se conectar com o servidor. Verifique se ele está escutando conexões.")
@@ -50,37 +50,69 @@ def init_socket():
         print("Conexão com o servidor encerrada.")
 
 
-def send_to_server(content):
+def send_to_server(action, content):
     client_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    try:
-        client_socket.connect('/tmp/arq_socket')
-        command = f"COPY {content}"
-        client_socket.send(command.encode())
-        print(f"Comando enviado: {command}")
+    # Logica do Json
+    message = {
+        "action":action,
+        "data": content,
+        "id": os.urandom(8).hex(),  # Gera um ID único
+        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ")  # Formato ISO 8601
+    }
+    json_message = json.dumps(message)
+    
+    # Envia o JSON via socket UNIX
+    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client_socket:
+        try:
+            client_socket.connect(SOCKET_PATH)
+            client_socket.sendall(json_message.encode())
+        except Exception as e:
+            print(f"Erro ao conectar ao servidor: {e}")
 
-        # Esperar resposta do servidor
-        response = client_socket.recv(1024)
-        print(f"Resposta do servidor: {response.decode()}")
+        finally:
+            client_socket.close()
 
-    except Exception as e:
-        print(f"Erro ao conectar ao servidor: {e}")
-    finally:
-        client_socket.close()
-
-# Configurar o daemon para rodar em segundo plano
+# Monitorar e manipular sinais do sistema
 def daemonize():
     pid = os.fork()
     if pid > 0:
-        sys.exit()  # O processo pai termina, deixando o daemon rodando
+        sys.exit()  # O processo pai termina
 
     os.setsid()  # Criar um novo grupo de sessão
-    os.umask(0)  # Configura permissões dos arquivos do daemon
+    os.umask(0)  # Configura permissões dos arquivos
 
-    # Ignorar sinais de controle do terminal (como SIGINT)
-    signal.signal(signal.SIGINT, clipboardManager.clipboard_manager_linux.handle_signal())
-    signal.signal(signal.SIGTERM, clipboardManager.clipboard_manager_linux.handle_signal())
+    signal.signal(signal.SIGINT, handle_signal)  # Lidar com Ctrl+C
+    signal.signal(signal.SIGTERM, handle_signal)  # Lidar com término educado
 
-    # Ficar em um loop escutando o sinal SIGINT
+    # Loop infinito para monitorar clipboard
+    monitor_clipboard()
+
+def monitor_clipboard():
+    previous_content = None  # Para verificar mudanças no clipboard
+
     while True:
-        time.sleep(1)  # Esperar pela interrupção do SIGINT
+        clipboard_content = get_clipboard_content()
+        if clipboard_content and clipboard_content != previous_content:
+            previous_content = clipboard_content
+            print(f"Conteúdo novo no clipboard: {clipboard_content}")
+            send_to_server("COPY",clipboard_content)
+        time.sleep(1)  # Evitar uso excessivo de CPU
 
+def get_clipboard_content():
+    """
+    Captura o conteúdo atual do clipboard usando xclip.
+    """
+    try:
+        result = subprocess.check_output(['xclip', '-selection', 'clipboard', '-o'], stderr=subprocess.DEVNULL)
+        return result.decode('utf-8').strip()
+    except subprocess.CalledProcessError:
+        print("Erro: Não foi possível acessar o clipboard. Verifique se o 'xclip' está instalado.")
+        return None
+
+
+def handle_signal(sig, frame):
+    if sig == signal.SIGINT:
+        print("Recebido SIGINT. Encerrando daemon...")
+    elif sig == signal.SIGTERM:
+        print("Recebido SIGTERM. Encerrando daemon...")
+    sys.exit(0)  # Encerrar o programa com sucesso
