@@ -1,15 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#ifdef _WIN32
-    #include <Windows.h>
-#elif __linux__
-    #include <sys/sysinfo.h>
-#else
-// Dá mensagem de erro informando que o sistemas não é suportado.
-    #error "Sistema nao suportado."
-#endif
+#include "storage.h"
 
 // Não há um número fixo de caracteres porque a área de transferência do Windows 10
 // armazena dados em bytes, e o tamanho exato varia com base na codificação
@@ -21,44 +10,11 @@
 
 // O projeto atual visa armazenar, teoricamente, até X% de dados da memória RAM, a se definir manualmente.
 
-typedef struct string {
-    char* str;
-} String;
-
-typedef struct node {
-    String data;
-    int isPinned;
-    struct node* next;
-} Node;
-
-typedef struct list {
-    Node* start;
-    Node* end;
-} List;
 
 Node* aux;
 Node* prev;
 Node* selected;
 
-List* create();
-Node* createAreaTransferencia();
-void insertStart(List* x);
-void insertEnd(List* x);
-void delete(List* x, int index);
-void clean(List* x);
-void show(List* x);
-
-int copiarString(Node* cabeca);
-void selectToPaste(List* x);
-void paste();
-
-void pinAndSave(List* x);
-void pinnedItensRoutine(List* x);
-int findNode(List* x, int index);
-
-void obterMemoriaTotalWindows(void);
-int verificarLimiarMemoriaWindows(void);
-void rotinaApagarInicio(List* x);
 
 int main(void)
 {
