@@ -104,13 +104,19 @@ O projeto combina a versatilidade do Python com a performance do C. Enquanto o c
    - Planejamento para integração de uma árvore de busca para consultas mais rápidas.  
    - Proposta de armazenamento permanente para persistência dos dados.  
 
+### **Estrutura**
+![image](https://github.com/user-attachments/assets/971e5c6b-20c0-4869-bc08-92ae2bb0b2c1)
+
 ---
 
 ## **Seção IV. Resultados e Conclusões**  
 
 ### **Resultados**  
 - **Funcionalidades Implementadas:**  
-  - Comunicação cliente-servidor bem-sucedida.  
+  - Comunicação cliente-servidor bem-sucedida.
+  - Armazenamento de cópias
+  - Captura de cópias em tempo real
+  - Armazenamento persistente 
 
 
 - **Desempenho:**  
@@ -121,24 +127,44 @@ TODO
 TODO
 
 - **Perspectivas Futuras:**  
-  - Implementar armazenamento permanente para histórico.  
   - Otimizar buscas com árvores de busca.  
   - Expandir a funcionalidade para múltiplos formatos de dados (imagens, arquivos, etc.).  
 
 ---
 
 ## **Referências**  
+Segue o texto transformado conforme as normas da ABNT para lista de referências. Utilizei o formato de referência para documentos eletrônicos (artigos e vídeos). Se precisar de ajustes, é só avisar!
 
-1. [Sockets and Pipes Look Like Files (Unix/fdopen)](https://www.youtube.com/watch?v=il4N6KjVQ-s)
-2. [Unix Domain Socket in 100 seconds](https://www.youtube.com/watch?v=1UHaR54i3ak)
-3. [[Linguagem C] Sockets no Windows e no Linux](https://www.youtube.com/watch?v=GaxjJvMnz-I)
-4. [socket](https://docs.python.org/3/library/socket.html#socket.SOCK_STREAM)
-5. [Programação de Soquetes](https://docs.python.org/pt-br/3/howto/sockets.html)
-6. [Can anyone explain to me how __init__ == ‘__main__’ is used properly? I’ve watched multiple videos but it just hard for me to understand.](https://www.reddit.com/r/Python/comments/qsezbh/can_anyone_explain_to_me_how_init_main_is_used/)
-7. [Introdução a Sockets em Python](https://medium.com/@urapython.community/introdu%C3%A7%C3%A3o-a-sockets-em-python-44d3d55c60d0)
-8. [Manipulação de arquivos em C — como abrir e fechar arquivos e escrever algo neles](https://www.freecodecamp.org/portuguese/news/manipulacao-de-arquivos-em-c-como-abrir-e-fechar-arquivos-e-escrever-algo-neles/)
-9. [How much memory does a call to ‘malloc’ allocate?](https://lemire.me/blog/2024/06/27/how-much-memory-does-a-call-to-malloc-allocates/)
-10. [Como armazenar uma string com tamanho qualquer (desconhecido antecipadamente) em C?](https://pt.quora.com/Como-armazenar-uma-string-com-tamanho-qualquer-desconhecido-antecipadamente-em-C)
-11. [Como faço para guardar uma string com tamanho indefinido sem utilizar memória extra](https://pt.stackoverflow.com/questions/175529/como-faço-para-guardar-uma-string-com-tamanho-indefinido-numa-estrutura)
-12. [How does the EOF macro work with getchar?](https://stackoverflow.com/questions/34816138/how-does-the-eof-macro-work-with-getchar)
+---
 
+### Referências  
+
+Segue a lista atualizada com as duas novas referências:
+
+---
+
+### Referências  
+
+**1.** Sockets and Pipes Look Like Files (Unix/fdopen). YouTube, 2024. Disponível em: [https://www.youtube.com/watch?v=il4N6KjVQ-s](https://www.youtube.com/watch?v=il4N6KjVQ-s). Acesso em: 27 nov. 2024.  
+
+**2.** Unix Domain Socket in 100 seconds. YouTube, 2024. Disponível em: [https://www.youtube.com/watch?v=1UHaR54i3ak](https://www.youtube.com/watch?v=1UHaR54i3ak). Acesso em: 27 nov. 2024.  
+
+**3.** [Linguagem C] Sockets no Windows e no Linux. YouTube, 2024. Disponível em: [https://www.youtube.com/watch?v=GaxjJvMnz-I](https://www.youtube.com/watch?v=GaxjJvMnz-I). Acesso em: 27 nov. 2024.  
+
+**4.** PYTHON. *socket — Low-level networking interface*. Disponível em: [https://docs.python.org/3/library/socket.html#socket.SOCK_STREAM](https://docs.python.org/3/library/socket.html#socket.SOCK_STREAM). Acesso em: 27 nov. 2024.  
+
+**5.** PYTHON. *Programação de soquetes*. Disponível em: [https://docs.python.org/pt-br/3/howto/sockets.html](https://docs.python.org/pt-br/3/howto/sockets.html). Acesso em: 27 nov. 2024.  
+
+**6.** Can anyone explain to me how `__init__ == '__main__'` is used properly? Reddit, 2024. Disponível em: [https://www.reddit.com/r/Python/comments/qsezbh/can_anyone_explain_to_me_how_init_main_is_used/](https://www.reddit.com/r/Python/comments/qsezbh/can_anyone_explain_to_me_how_init_main_is_used/). Acesso em: 27 nov. 2024.  
+
+**7.** Introdução a sockets em Python. *Medium*, 2024. Disponível em: [https://medium.com/@urapython.community/introdu%C3%A7%C3%A3o-a-sockets-em-python-44d3d55c60d0](https://medium.com/@urapython.community/introdu%C3%A7%C3%A3o-a-sockets-em-python-44d3d55c60d0). Acesso em: 27 nov. 2024.  
+
+**8.** Manipulação de arquivos em C — como abrir e fechar arquivos e escrever algo neles. *FreeCodeCamp*, 2024. Disponível em: [https://www.freecodecamp.org/portuguese/news/manipulacao-de-arquivos-em-c-como-abrir-e-fechar-arquivos-e-escrever-algo-neles/](https://www.freecodecamp.org/portuguese/news/manipulacao-de-arquivos-em-c-como-abrir-e-fechar-arquivos-e-escrever-algo-neles/). Acesso em: 27 nov. 2024.  
+
+**9.** LEMIRE, D. How much memory does a call to `malloc` allocate? *Daniel Lemire's blog*, 2024. Disponível em: [https://lemire.me/blog/2024/06/27/how-much-memory-does-a-call-to-malloc-allocates/](https://lemire.me/blog/2024/06/27/how-much-memory-does-a-call-to-malloc-allocates/). Acesso em: 27 nov. 2024.  
+
+**10.** Como armazenar uma string com tamanho qualquer (desconhecido antecipadamente) em C? *Quora*, 2024. Disponível em: [https://pt.quora.com/Como-armazenar-uma-string-com-tamanho-qualquer-desconhecido](https://pt.quora.com/Como-armazenar-uma-string-com-tamanho-qualquer-desconhecido). Acesso em: 27 nov. 2024.  
+
+**11.** Como faço para guardar uma string com tamanho indefinido sem utilizar memória extra? *Stack Overflow em Português*, 2024. Disponível em: [https://pt.stackoverflow.com/questions/175529/como-faço-para-guardar-uma-string-com-tamanho-indefinido-numa-estrutura](https://pt.stackoverflow.com/questions/175529/como-faço-para-guardar-uma-string-com-tamanho-indefinido-numa-estrutura). Acesso em: 27 nov. 2024.  
+
+**12.** How does the EOF macro work with getchar? *Stack Overflow*, 2024. Disponível em: [https://stackoverflow.com/questions/34816138/how-does-the-eof-macro-work-with-getchar](https://stackoverflow.com/questions/34816138/how-does-the-eof-macro-work-with-getchar). Acesso em: 27 nov. 2024.  
