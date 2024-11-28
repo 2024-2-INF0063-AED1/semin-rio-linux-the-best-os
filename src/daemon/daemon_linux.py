@@ -146,7 +146,7 @@ def get_clipboard_content():
     :return: Conteúdo do clipboard (str) ou None se houver erro.
     """
     try:
-        result = subprocess.check_output(['xclip', '-selection', 'clipboard', '-o'], stderr=subprocess.DEVNULL)
+        result = subprocess.check_output(['/usr/bin/xclip', '-selection', 'clipboard', '-o'], stderr=subprocess.DEVNULL)
         return result.decode('utf-8').strip()
     except subprocess.CalledProcessError:
         print("Erro: Não foi possível acessar o clipboard. Verifique se o 'xclip' está instalado.")
