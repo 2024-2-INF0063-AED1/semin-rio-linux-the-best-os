@@ -146,7 +146,7 @@ def get_clipboard_content():
     :return: Conteúdo do clipboard (str) ou None se houver erro.
     """
     try:
-        result = subprocess.check_output(['/usr/bin/xclip', '-selection', 'clipboard', '-o'], stderr=subprocess.DEVNULL)
+        result = subprocess.check_output(['/usr/bin/xclip', '-selection', 'clipboard'], stderr=subprocess.DEVNULL)
         return result.decode('utf-8').strip()
     except subprocess.CalledProcessError:
         print("Erro: Não foi possível acessar o clipboard. Verifique se o 'xclip' está instalado.")
@@ -171,3 +171,21 @@ if __name__ == "__main__":
     else:
         run_daemon()
 
+def request_show_storage(server_address):
+    try:
+        sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        sock.connect(server_address)
+
+        data = {"action": "SHOW"}
+        sock.send(json.dumps(data).encode('utf-8'))
+
+        response = sock.recv(4096).decode('utf-8')
+        items = json.loads(response)
+
+        print("Itens armazenados:")
+        for item in items:
+            print(f"ID: {item['id']}, Data: {item['data']}")
+        
+        sock.close()
+    except Exception as e:
+        print(f"Erro ao solicitar SHOW: {e}")

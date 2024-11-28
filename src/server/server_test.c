@@ -11,7 +11,7 @@
 #define SOCKET_PATH "/tmp/arq_socket"
 #define BUFFER_SIZE 1024
 
-void handle_copy(const char *data);
+void handle_copy(const char *data, const char *time_copy);
 void handle_delete(const char *id);
 void handle_select(const char *id, int client_socket);
 // void handle_show(int client_socket);
@@ -78,7 +78,7 @@ int main() {
             }
 
             // Extraindo campos do JSON
-            struct json_object *action_obj, *data_obj, *id_obj;
+            struct json_object *action_obj, *data_obj, *id_obj, *time_obj;
 
             json_object_object_get_ex(parsed_json, "action", &action_obj);
             const char *action = json_object_get_string(action_obj);
@@ -89,9 +89,12 @@ int main() {
             json_object_object_get_ex(parsed_json, "id", &id_obj);
             const char *id = id_obj ? json_object_get_string(id_obj) : NULL;
 
+            json_object_object_get_ex(parsed_json, "time", &time_obj);
+            const char *time = time_obj ? json_object_get_string(time_obj) : NULL;
+
             // Processando ações
             if (strcmp(action, "COPY") == 0 && data) {
-                handle_copy(data);
+                handle_copy(data, time);
             } else if (strcmp(action, "DELETE") == 0 && id) {
                 handle_delete(id);
             } else if (strcmp(action, "SELECT") == 0 && id) {
@@ -116,14 +119,14 @@ int main() {
     return 0;
 }
 
-void handle_copy(const char *data) {
+void handle_copy(const char *data, const char *time_copy) {
     srand(time(NULL));
 
     char id[20];
     int random_number = rand();
     snprintf(id, sizeof(id), "%d", random_number);
     
-    printf("Executando COPY com data: %s\n", data);
+    printf("Executando COPY com data: %s\n Time: %s", data, time_copy);
     copy_to_storage(list ,id, data); // Função da lista ligada para armazenar o dado
 }
 
