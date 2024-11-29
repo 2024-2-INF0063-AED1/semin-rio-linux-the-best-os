@@ -81,47 +81,69 @@ const char *select_from_storage(StorageList *list, const char *id) {
     return NULL;
 }
 
-// Mostra todos os itens da lista
-void show_storage(const StorageList *list) {
-    if (!list) return;
+// void show_storage(const StorageList *list) {
+//     if (!list) return;
+//
+//     StorageNode *current = list->head;
+//     while (current) {
+//         printf("ID: %s, Data: %s\n", current->id, current->data);
+//         current = current->next;
+//     }
+// }
 
-    StorageNode *current = list->head;
-    while (current) {
-        printf("ID: %s, Data: %s\n", current->id, current->data);
+// Mostra todos os itens da lista
+void show_storage(const StorageList *list, int client_fd, char *buffer, size_t buffer_size) {
+
+    memset(buffer, 0, buffer_size);
+
+    strcat(buffer, "[");
+
+    StorageNode* current = list->head;
+    
+    while (current != NULL) {
+        char item[256];
+        snprintf(item, sizeof(item), "{\"id\":%s,\"data\":\"%s\"}", current->id, current->data);
+        strcat(buffer, item);
+        if (current->next != NULL) {
+            strcat(buffer, ",");
+        }
         current = current->next;
     }
+
+    strcat(buffer, "]");
+
 }
 
-// Testa a função de cópia
-void test_storage_copy(StorageList *list) {
-    printf("Testando COPY...\n");
-    copy_to_storage(list, "1234567890abcdef", "Primeiro Item");
-    copy_to_storage(list, "abcdef1234567890", "Segundo Item");
-    show_storage(list);
-}
-
-// Testa a função de exclusão
-void test_storage_delete(StorageList *list) {
-    printf("Testando DELETE...\n");
-    delete_from_storage(list, "1234567890abcdef");
-    show_storage(list);
-}
-
-// Testa a função de seleção
-void test_storage_select(StorageList *list) {
-    printf("Testando SELECT...\n");
-    const char *data = select_from_storage(list, "abcdef1234567890");
-    if (data) {
-        printf("Item selecionado: %s\n", data);
-    } else {
-        printf("Item não encontrado.\n");
-    }
-}
-
-// Testa a função de exibição
-void test_storage_show(StorageList *list) {
-    printf("Testando SHOW...\n");
-    show_storage(list);
-}
+// // Testa a função de cópia
+// void test_storage_copy(StorageList *list) {
+//     printf("Testando COPY...\n");
+//     copy_to_storage(list, "1234567890abcdef", "Primeiro Item");
+//     copy_to_storage(list, "abcdef1234567890", "Segundo Item");
+//     show_storage(list);
+// }
+//
+// // Testa a função de exclusão
+// void test_storage_delete(StorageList *list) {
+//     printf("Testando DELETE...\n");
+//     delete_from_storage(list, "1234567890abcdef");
+//     show_storage(list);
+// }
+//
+// // Testa a função de seleção
+// void test_storage_select(StorageList *list) {
+//     printf("Testando SELECT...\n");
+//     const char *data = select_from_storage(list, "abcdef1234567890");
+//     if (data) {
+//         printf("Item selecionado: %s\n", data);
+//     } else {
+//         printf("Item não encontrado.\n");
+//     }
+// }
+//
+// // Testa a função de exibição
+// void test_storage_show(StorageList *list) {
+//     printf("Testando SHOW...\n");
+//     show_storage(list);
+// }
 
 

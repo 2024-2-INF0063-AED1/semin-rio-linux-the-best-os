@@ -22,7 +22,7 @@ void destroy_storage_list(StorageList *list);
 int copy_to_storage(StorageList *list, const char *id, const char *data);
 int delete_from_storage(StorageList *list, const char *id);
 const char *select_from_storage(StorageList *list, const char *id);
-void show_storage(const StorageList *list);
+void show_storage(const StorageList *list, int client_fd, char* buffer, size_t buffer_size);
 
 // Testes unitários
 void test_storage_copy(StorageList *list);
