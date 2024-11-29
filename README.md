@@ -139,12 +139,6 @@ Segue o texto transformado conforme as normas da ABNT para lista de referências
 
 ### Referências  
 
-Segue a lista atualizada com as duas novas referências:
-
----
-
-### Referências  
-
 **1.** Sockets and Pipes Look Like Files (Unix/fdopen). YouTube, 2024. Disponível em: [https://www.youtube.com/watch?v=il4N6KjVQ-s](https://www.youtube.com/watch?v=il4N6KjVQ-s). Acesso em: 27 nov. 2024.  
 
 **2.** Unix Domain Socket in 100 seconds. YouTube, 2024. Disponível em: [https://www.youtube.com/watch?v=1UHaR54i3ak](https://www.youtube.com/watch?v=1UHaR54i3ak). Acesso em: 27 nov. 2024.  
