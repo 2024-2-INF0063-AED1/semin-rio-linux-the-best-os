@@ -120,11 +120,11 @@ O projeto combina a versatilidade do Python com a performance do C. Enquanto o c
 
 
 - **Desempenho:**  
-TODO
+TODO: Medições de latência e consumo de memória estão planejadas para avaliação futura.
 
 ### **Conclusões**  
 - **Lições Aprendidas:**  
-TODO
+TODO: Será atualizado após análise detalhada dos resultados obtidos.
 
 - **Perspectivas Futuras:**  
   - Otimizar buscas com árvores de busca.  
