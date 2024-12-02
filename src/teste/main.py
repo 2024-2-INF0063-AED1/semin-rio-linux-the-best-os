@@ -5,9 +5,15 @@ import os
 import subprocess
 import time
 import signal
-from daemon_linux import clipboard_history
+from threading import Thread
+from daemon_linux import clipboard_history, run_daemon
+
+# Controle de subprocessos
+server_process = None
+daemon_thread = None
 
 def init_os():
+    global server_process
     if platform.system() == "Linux":
         from daemon_linux import run_daemon  # Import específico para Linux
         print("Start server")
@@ -20,7 +26,8 @@ def init_os():
 
         time.sleep(2)  # Aguardar para garantir que o servidor está ativo
         print("Running daemon...")
-        subprocess.Popen(run_daemon())
+        start_daemon_in_thread()
+        # subprocess.Popen(run_daemon())
 
     # elif platform.system() == "Windows":
     #     from daemon_win import run_daemon  # Import específico para Windows
@@ -29,6 +36,7 @@ def init_os():
         print("Sistema Operacional não suportado")
 
 def start_server_linux():
+    global server_process
     print("Iniciando servidor")
     # Compilando o código C
     compile_command = ["gcc", "server_test.c", "storage/storage_test.c", "-ljson-c", "-o", "teste"]
@@ -42,7 +50,7 @@ def start_server_linux():
     # Executar o servidor compilado
     run_command = ["./teste"]
     try:
-        subprocess.Popen(run_command)
+        server_process = subprocess.Popen(run_command)
         time.sleep(1) 
         print("Servidor iniciado com sucesso")
         return True
@@ -54,9 +62,16 @@ def stop_program():
     """
     Para o servidor e o daemon ao encerrar o programa.
     """
+    global server_process
     print("Encerrando servidor e cliente...")
+    # Enviar sinal para encerrar o servidor
+    if server_process and server_process.poll() is None:
+        server_process.terminate()
+        server_process.wait()
+        print("Servidor Encerrado")
     # Enviar sinais de término para o daemon e o servidor
     os.kill(os.getpid(), signal.SIGTERM)  # Exemplo: enviar SIGTERM ao processo principal
+    print("Programa encerrado")
     
 # def update_history():
 #     """
@@ -66,6 +81,11 @@ def stop_program():
 #     for item in clipboard_history:
 #         history_text.insert(tk.END, f"{item}\n")
 #     root.after(1000, update_history)  # Atualiza a cada segundo
+
+def start_daemon_in_thread():
+    global daemon_thread
+    daemon_thread = Thread(target=run_daemon, daemon=True)
+    daemon_thread.start()
 
 def main():
     print("Iniciando processo")
@@ -94,4 +114,7 @@ def main():
     root.mainloop()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    finally:
+        stop_program()

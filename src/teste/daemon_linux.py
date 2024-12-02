@@ -37,7 +37,7 @@ def init_socket():
 
         # Envia uma mensagem inicial para o servidor
         message = "Init Connection"
-        send_to_server("TEST", message)
+        send_to_server("COPY", message)
 
         # Tenta receber uma resposta
         client_socket.settimeout(2)
@@ -93,7 +93,7 @@ def get_from_server():
     Solicita ao servidor os dados armazenados e exibe a resposta.
     """
     message = {
-        "action": "GET",
+        "action": "SELECT",
         "data": None,
         "id": os.urandom(8).hex(),
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -154,7 +154,7 @@ def get_clipboard_content():
     :return: Conteúdo do clipboard (str) ou None se houver erro.
     """
     try:
-        result = subprocess.check_output(['xclip', '-selection', 'clipboard'], stderr=subprocess.DEVNULL)
+        result = subprocess.check_output(['/usr/bin/xclip', '-selection', 'clipboard'], stderr=subprocess.DEVNULL)
         return result.decode('utf-8').strip()
     except subprocess.CalledProcessError:
         print("Erro: Não foi possível acessar o clipboard. Verifique se o 'xclip' está instalado.")
