@@ -5,9 +5,12 @@ import signal
 import subprocess
 import time
 import sys
+from threading import Thread
 
 # Caminho do socket UNIX utilizado para comunicação
 SOCKET_PATH = "/tmp/arq_socket"
+
+clipboard_history = []
 
 def run_daemon():
     """
@@ -34,7 +37,8 @@ def init_socket():
 
         # Envia uma mensagem inicial para o servidor
         message = "Init Connection"
-        client_socket.send(message.encode())
+        send_to_server("TEST", message)
+        # client_socket.send(message.encode())
         print("Mensagem enviada:", message)
 
         # Recebe resposta do servidor
@@ -135,6 +139,7 @@ def monitor_clipboard():
         clipboard_content = get_clipboard_content()
         if clipboard_content and clipboard_content != previous_content:
             previous_content = clipboard_content
+            clipboard_history.append(clipboard_content)
             print(f"Conteúdo novo no clipboard: {clipboard_content}")
             send_to_server("COPY", clipboard_content)
         time.sleep(1)  # Evita uso excessivo de CPU
@@ -146,7 +151,7 @@ def get_clipboard_content():
     :return: Conteúdo do clipboard (str) ou None se houver erro.
     """
     try:
-        result = subprocess.check_output(['/usr/bin/xclip', '-selection', 'clipboard'], stderr=subprocess.DEVNULL)
+        result = subprocess.check_output(['xclip', '-selection', 'clipboard'], stderr=subprocess.DEVNULL)
         return result.decode('utf-8').strip()
     except subprocess.CalledProcessError:
         print("Erro: Não foi possível acessar o clipboard. Verifique se o 'xclip' está instalado.")

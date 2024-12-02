@@ -113,6 +113,8 @@ int main() {
                 handle_select(id, client_socket);
             // } else if (strcmp(action, "SHOW") == 0) {
             //     handle_show(client_socket);
+            } else if (strcmp(action, "TEST") == 0 && id) {
+                puts("Mensage test");
             } else {
                 fprintf(stderr, "Ação inválida ou dados ausentes.\n");
             }
