@@ -38,12 +38,15 @@ def init_socket():
         # Envia uma mensagem inicial para o servidor
         message = "Init Connection"
         send_to_server("TEST", message)
-        # client_socket.send(message.encode())
-        print("Mensagem enviada:", message)
 
-        # Recebe resposta do servidor
-        response = client_socket.recv(1024)
-        print("Resposta do servidor:", response.decode())
+        # Tenta receber uma resposta
+        client_socket.settimeout(2)
+        try:
+            # Recebe resposta do servidor
+            response = client_socket.recv(1024)
+            print("Resposta do servidor:", response.decode())
+        except socket.timeout:
+            print("Nenhuma resposta do servidor, continuando o programa")
 
     except FileNotFoundError:
         print(f"Erro: Arquivo {SOCKET_PATH} não encontrado. Verifique se o servidor está ativo.")

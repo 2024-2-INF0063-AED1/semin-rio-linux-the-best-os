@@ -34,6 +34,8 @@ int main() {
 
     // Criando o socket UNIX
     if ((server_socket = socket(AF_UNIX, SOCK_STREAM, 0)) == -1) {
+        char *erro_create="Erro ao criar o socket\n";
+        write(client_socket, erro_create, strlen(erro_create));
         perror("Erro ao criar o socket");
         exit(EXIT_FAILURE);
     }
@@ -48,6 +50,8 @@ int main() {
 
     // Bind do socket
     if (bind(server_socket, (struct sockaddr *)&server_addr, sizeof(server_addr)) == -1) {
+        char *erro_bind="Erro ao fazer bind\n";
+        write(client_socket, erro_bind, strlen(erro_bind));
         perror("Erro ao fazer bind");
         close(server_socket);
         exit(EXIT_FAILURE);
@@ -55,12 +59,18 @@ int main() {
 
     // Escutando no socket
     if (listen(server_socket, 5) == -1) {
+         
+        char *erro_listen="Erro ao escutar no socket\n";
+        write(client_socket, erro_listen, strlen(erro_listen));
         perror("Erro ao escutar no socket");
         close(server_socket);
         exit(EXIT_FAILURE);
     }
 
     printf("Servidor ouvindo no socket: %s\n", SOCKET_PATH);
+
+    char *response="Servidor ouvindo no socket"; // TODO: Melhorar e colocar o socket tb
+    write(client_socket, response, strlen(response));
 
     list = create_storage_list();
 
@@ -70,6 +80,8 @@ int main() {
     while (!stop) {
         // Aceitando conexão
         if ((client_socket = accept(server_socket, NULL, NULL)) == -1) {
+            char *erro_socket="Erro ao aceitar conexão\n";
+            write(client_socket, erro_socket, strlen(erro_socket));
             perror("Erro ao aceitar conexão");
             continue;
         }
@@ -84,6 +96,8 @@ int main() {
             // Parse do JSON recebido
             struct json_object *parsed_json = json_tokener_parse(buffer);
             if (parsed_json == NULL) {
+                char *erro_json_response="Erro ao interpretar JSON\n";
+                write(client_socket, erro_json_response, strlen(erro_json_response));
                 fprintf(stderr, "Erro ao interpretar JSON.\n");
                 close(client_socket);
                 continue;
@@ -114,7 +128,9 @@ int main() {
             // } else if (strcmp(action, "SHOW") == 0) {
             //     handle_show(client_socket);
             } else if (strcmp(action, "TEST") == 0 && id) {
-                puts("Mensage test");
+                printf("Servidor: Mensagem teste chegou no servidor");
+                const char *response = "TEST OK";
+                    write(client_socket, response, strlen(response)); // Envia a resposta ao cliente
             } else {
                 fprintf(stderr, "Ação inválida ou dados ausentes.\n");
             }
