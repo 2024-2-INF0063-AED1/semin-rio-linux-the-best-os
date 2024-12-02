@@ -1,0 +1,3 @@
+[
+    "echo \"Teste\" | xclip -selection clipboard\nxclip -selection clipboard -o"
+]
