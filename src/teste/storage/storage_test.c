@@ -16,35 +16,19 @@
     }
 
     // Destroi a lista de armazenamento
-    // void destroy_storage_list(StorageList *list) {
-    //     if (!list) return;
-    //
-    //     StorageNode *current = list->head;
-    //     while (current) {
-    //         StorageNode *next = current->next;
-    //         free(current->data);
-    //         free(current);
-    //         current = next;
-    //     }
-    //     free(list);
-    //     list = NULL;
-    // }
+    void destroy_storage_list(StorageList *list) {
+        if (!list) return;
 
-    void destroy_storage_list(StorageList **list_ptr) {
-        if (!list_ptr || !(*list_ptr)) return;
-
-        StorageNode *current = (*list_ptr)->head;
+        StorageNode *current = list->head;
         while (current) {
             StorageNode *next = current->next;
             free(current->data);
             free(current);
             current = next;
         }
-        free(*list_ptr);
-
-        *list_ptr = NULL; // Redefine o ponteiro original para NULL
+        free(list);
+        list = NULL;
     }
-
 
     // Adiciona um item à lista
     int copy_to_storage(StorageList *list, const char *id, const char *data) {
