@@ -1,5 +1,5 @@
 from interface import ClipboardInterface
-from daemon import ClipboardDaemon
+from clipboard_daemon import ClipboardDaemon
 from search_tree import ClipboardSearchTree
 
 class ClipboardManager:

@@ -19,7 +19,7 @@ class ClipboardInterface:
         self.paste_button = tk.Button(self.root, text="Paste", command=self.paste_selected)
         self.paste_button.pack(pady=5)
 
-        self.stop_button = tk.Button(self.root, text="Stop", command=self.stop_daemon)
+        self.stop_button = tk.Button(self.root, text="Stop", command=self.stop_daemon, bg="red", fg="white")
         self.stop_button.pack(pady=5)
 
     def refresh_list(self):
