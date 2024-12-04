@@ -33,7 +33,7 @@ int main(void) {
 
     test_storage_show(list);
 
-    destroy_storage_list(&list);
+    destroy_storage_list(list);
 
     if(!list) {
         printf("A lista esta destruida.");

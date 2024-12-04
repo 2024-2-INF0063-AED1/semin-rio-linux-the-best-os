@@ -6,7 +6,8 @@ import subprocess
 import time
 import signal
 from threading import Thread
-from daemon_linux import clipboard_history, run_daemon
+
+from linux.daemon.daemon_linux import handle_signal, run_daemon
 
 # Controle de subprocessos
 server_process = None
@@ -15,7 +16,7 @@ daemon_thread = None
 def init_os():
     global server_process
     if platform.system() == "Linux":
-        from daemon_linux import run_daemon  # Import específico para Linux
+        from linux.daemon.daemon_linux import clipboard_history, run_daemon
         print("Start server")
         
         # Iniciar o servidor Linux e verificar sucesso
@@ -39,7 +40,7 @@ def start_server_linux():
     global server_process
     print("Iniciando servidor")
     # Compilando o código C
-    compile_command = ["gcc", "server_test.c", "storage/storage_test.c", "-ljson-c", "-o", "teste"]
+    compile_command = ["gcc", "./linux/server/server_linux.c", "./storage/storage_test.c", "-ljson-c", "-o", "teste"]
     try:
         subprocess.run(compile_command, check=True)
         print("Compilação concluída com sucesso.")
@@ -84,7 +85,7 @@ def stop_program():
 
 def start_daemon_in_thread():
     global daemon_thread
-    daemon_thread = Thread(target=run_daemon, daemon=True)
+    daemon_thread = Thread(target=run_daemon(), daemon=True)
     daemon_thread.start()
 
 def main():
@@ -92,6 +93,7 @@ def main():
 
     init_os()
     # Configurar janela principal
+    print("Iniciando a interface")
     root = tk.Tk()
     root.title("Clipboard Monitor")
 
@@ -117,4 +119,5 @@ if __name__ == "__main__":
     try:
         main()
     finally:
+        handle_signal(signal.SIGTERM, "") #encerrando o daemon linux
         stop_program()

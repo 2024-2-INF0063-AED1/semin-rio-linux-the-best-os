@@ -23,7 +23,7 @@ typedef struct {
 // Funções auxiliares para gerenciar a lista
 StorageList *create_storage_list();
 // void destroy_storage_list(StorageList *list);
-void destroy_storage_list(StorageList **list_ptr);
+void destroy_storage_list(StorageList *list_ptr);
 int copy_to_storage(StorageList *list, const char *id, const char *data);
 int delete_from_storage(StorageList *list, const char *id);
 const char *select_from_storage(StorageList *list, const char *id);

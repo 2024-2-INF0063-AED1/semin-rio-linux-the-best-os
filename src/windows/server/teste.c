@@ -1,4 +1,4 @@
-#include "server.h"
+#include "./server/server_windows.h"
 
 int main() {
     if (start_server() == 0) {
