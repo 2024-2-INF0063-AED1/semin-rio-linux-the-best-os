@@ -21,8 +21,8 @@ class ClipboardInterface:
         self.search_button = tk.Button(self.root, text="Search", command=self.search_clipboard)
         self.search_button.pack(pady=5)
 
-        self.refresh_button = tk.Button(self.root, text="Refresh", command=self.refresh_list)
-        self.refresh_button.pack(pady=5)
+#        self.refresh_button = tk.Button(self.root, text="Refresh", command=self.refresh_list)
+#        self.refresh_button.pack(pady=5)
 
         self.paste_button = tk.Button(self.root, text="Paste", command=self.paste_selected)
         self.paste_button.pack(pady=5)
@@ -57,5 +57,5 @@ class ClipboardInterface:
         self.root.destroy()
 
     def run(self):
-        self.refresh_list()
+        # self.refresh_list()
         self.root.mainloop()
