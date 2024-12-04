@@ -22,6 +22,8 @@ class ClipboardInterface:
         self.stop_button = tk.Button(self.root, text="Stop", command=self.stop_daemon, bg="red", fg="white")
         self.stop_button.pack(pady=5)
 
+        # self.search_button = tk.Button(self.root, text="Search", command=search)
+
     def refresh_list(self):
         self.listbox.delete(0, tk.END)
         for text in self.clipboard_manager.get_all_texts():
@@ -31,6 +33,10 @@ class ClipboardInterface:
         selected = self.listbox.get(tk.ACTIVE)
         if selected:
             pyperclip.copy(selected)
+
+    # def search(self):
+    #     term = tk.Entry.get(self)
+    #     label_result.config(text=f"You search for : {term}")
 
     def stop_daemon(self):
         self.daemon.stop()
