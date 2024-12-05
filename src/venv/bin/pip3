@@ -1,4 +1,4 @@
-#!/home/marinho/Documents/github/semin-rio-linux-the-best-os/src/venv/bin/python
+#!/home/marinho/Documents/github/semin-rio-linux-the-best-os/teste/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

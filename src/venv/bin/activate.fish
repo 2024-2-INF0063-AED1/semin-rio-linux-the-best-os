@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/marinho/Documents/github/semin-rio-linux-the-best-os/src/venv"
+set -gx VIRTUAL_ENV "/home/marinho/Documents/github/semin-rio-linux-the-best-os/teste/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
