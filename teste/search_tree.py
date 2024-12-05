@@ -32,9 +32,9 @@ class ClipboardSearchTree:
     def _search_recursive(self, node, query):
         if not node:
             return None
-        if query in node.text:
+        if query in node.text.lower():
             return node.text
-        if query < node.text:
+        if query < node.text.lower():
             return self._search_recursive(node.left, query)
         return self._search_recursive(node.right, query)
 
