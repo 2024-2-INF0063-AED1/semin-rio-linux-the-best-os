@@ -114,9 +114,6 @@ Os métodos implementados incluem:
   - Busca e gerenciamento do histórico por meio de interface gráfica.  
   - Armazenamento dinâmico com Árvore de Busca Binária.  
 
-### **Desempenho**  
-- **Latência:** O sistema apresenta um tempo médio de resposta de 1 segundo entre a captura e o registro do conteúdo copiado.  
-
 ---
 
 ## **Seção VII. Conclusões e Trabalhos Futuros**  
