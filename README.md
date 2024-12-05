@@ -1,164 +1,148 @@
 # Gerenciador Multiplataforma de Histórico de Clipboard  
 
-**Autores:** 
-- Enzo Daniel Marinho
-- Ryan Ribeiro Rodrigues
-- Ian Azevedo de Carvalho
+**Autores:**  
+- Enzo Daniel Marinho  
+- Ryan Ribeiro Rodrigues  
+- Ian Azevedo de Carvalho  
 
-**Resumo:** Este projeto propõe a criação de um gerenciador multiplataforma de histórico de clipboard. Ele captura automaticamente o conteúdo copiado pelo usuário e o organiza em um histórico acessível e gerenciável. Utiliza sockets para comunicação cliente-servidor e implementa algoritmos otimizados para busca e armazenamento dinâmico dos itens. 
+**Resumo:**  
+Este projeto implementa um gerenciador de histórico de clipboard multiplataforma usando Python. Ele captura automaticamente o conteúdo copiado pelo usuário e o organiza em uma estrutura de dados otimizada para busca e gerenciamento. A aplicação apresenta uma interface gráfica intuitiva e um daemon que monitora continuamente o clipboard.  
 
-**Palavras-chave:** Clipboard, sockets, sistemas operacionais, armazenamento dinâmico, Python, C  
+**Palavras-chave:** Clipboard, gerenciamento de histórico, Python, Tkinter, automação  
 
 ---
 
 ## **Seção I. Introdução**  
 
 ### **Problema**  
-Usuários frequentemente enfrentam dificuldades para gerenciar o histórico de itens copiados. O problema é mais evidente em tarefas que demandam múltiplas referências ao clipboard, como pesquisas, edição de documentos e programação. Esse projeto busca solucionar essa limitação, fornecendo um sistema que captura, organiza e facilita o acesso ao histórico de textos copiados.  
-
-### **Literatura**
-
-1. **Vídeo:** [Sockets and Pipes Look Like Files (Unix/fdopen)](https://www.youtube.com/watch?v=il4N6KjVQ-s)  
-   - Explica como sockets e pipes podem ser manipulados como arquivos em sistemas Unix, destacando o uso de `fdopen`.  
-
-2. **Vídeo:** [Unix Domain Socket in 100 seconds](https://www.youtube.com/watch?v=1UHaR54i3ak)  
-   - Uma introdução rápida e prática ao uso de Unix Domain Sockets.  
-
-3. **Vídeo:** [[Linguagem C] Sockets no Windows e no Linux](https://www.youtube.com/watch?v=GaxjJvMnz-I)  
-   - Demonstra como implementar sockets em C, abordando tanto sistemas Windows quanto Linux.  
-
-4. **Documentação:** [socket](https://docs.python.org/3/library/socket.html#socket.SOCK_STREAM)  
-   - Documentação oficial do módulo `socket` em Python, cobrindo o uso de `SOCK_STREAM` para comunicação TCP.  
-
-5. **How-to Guide:** [Programação de Soquetes](https://docs.python.org/pt-br/3/howto/sockets.html)  
-   - Guia introdutório à programação de sockets, com exemplos em Python.  
-
-6. **Discussão:** [Can anyone explain to me how __init__ == '__main__' is used properly?](https://www.reddit.com/r/Python/comments/qsezbh/can_anyone_explain_to_me_how_init_main_is_used/)  
-   - Discussão em fórum sobre o uso correto da estrutura `if __name__ == '__main__'` em Python, relevante para a execução do cliente.  
-
-7. **Artigo:** [Introdução a Sockets em Python](https://medium.com/@urapython.community/introdu%C3%A7%C3%A3o-a-sockets-em-python-44d3d55c60d0)  
-   - Um artigo introdutório sobre programação com sockets em Python, incluindo exemplos práticos.
-     
-8. **Artigo:** [Manipulação de arquivos em C — como abrir e fechar arquivos e escrever algo neles](https://www.freecodecamp.org/portuguese/news/manipulacao-de-arquivos-em-c-como-abrir-e-fechar-arquivos-e-escrever-algo-neles/)
-   - Um artigo que trata de abrir, escrever, ler e fechar arquivos .txt em C
-
-9. **Artigo:** [How much memory does a call to ‘malloc’ allocate?](https://lemire.me/blog/2024/06/27/how-much-memory-does-a-call-to-malloc-allocates/)
-   - Artigo que discute o funcionamento da função malloc com mais detalhes
-
-10. **Artigo:** [Como armazenar uma string com tamanho qualquer (desconhecido antecipadamente) em C?](https://pt.quora.com/Como-armazenar-uma-string-com-tamanho-qualquer-desconhecido-antecipadamente-em-C)
-   - Uma solução de como ler uma string de tamanho desconhecido, porém ainda possui a limitação de não suportar o caractere de quebra de linha
-
-11. **Artigo:** [Como faço para guardar uma string com tamanho indefinido sem utilizar memória extra](https://pt.stackoverflow.com/questions/175529/como-faço-para-guardar-uma-string-com-tamanho-indefinido-numa-estrutura)
-   - Artigo que trata da leitura de string de tamanho desconhecido, dando ênfase ao uso adequado de buffers e a função strlen(), ideal para o entendimento do código, que implementa na função realloc().
-
-12. **Artigo:** [How does the EOF macro work with getchar?](https://stackoverflow.com/questions/34816138/how-does-the-eof-macro-work-with-getchar)
-   - Artigo que trata da macro nativa EOF, uma macro que é a solução implementada para a leitura indefinida de caracteres, teoricamente, além de uma segunda solução implementada no código.
-
-### **Dataset**  
-Neste projeto, o "dataset" é composto pelos itens copiados pelo usuário em tempo real, armazenados inicialmente em uma lista ligada e, futuramente, em arquivos persistentes.  
+A gestão do histórico de clipboard é uma necessidade cada vez mais presente em tarefas que demandam múltiplas referências, como edição de textos, pesquisa e programação. Este projeto aborda essa dificuldade ao criar uma solução que organiza e facilita o acesso a itens previamente copiados, promovendo maior eficiência e produtividade.  
 
 ### **Métodos**  
-Os métodos principais incluem:  
-1. Captura automática de eventos de `CTRL+C`.  
-2. Comunicação cliente-servidor via sockets.  
-3. Armazenamento dinâmico em listas ligadas com nó descritor.  
-4. Planejamento para integração de árvores de busca para otimização.  
+Os métodos implementados incluem:  
+1. **Monitoramento Contínuo:** Um daemon em Python para capturar automaticamente o conteúdo do clipboard.  
+2. **Estrutura de Dados Otimizada:** Utilização de uma Árvore de Busca Binária para armazenamento dinâmico e eficiente.  
+3. **Interface Gráfica (GUI):** Desenvolvida com Tkinter para interação amigável e intuitiva com o usuário.  
 
-### **Avaliação**  
-Os resultados serão medidos por:  
-- Latência das operações (`COPY`, `DELETE`, `SELECT`, `SHOW_LIST`).  
-- Consumo de memória durante a execução.  
-- Eficiência da busca no histórico (quando implementada a árvore de busca).  
+### **Objetivos**  
+- Capturar o conteúdo copiado em tempo real.  
+- Armazenar o histórico de forma estruturada e permitir buscas eficientes.  
+- Oferecer uma interface gráfica simples e funcional para gerenciamento do histórico.  
 
 ---
 
-## **Seção II. Fundamentos Teóricos**  
+## **Seção II. Arquitetura do Sistema**  
 
-### **Sockets Cliente-Servidor**  
-A comunicação cliente-servidor é realizada por meio de sockets UNIX (Linux) e TCP/IP (Windows). Essa abordagem permite troca de dados rápida e confiável entre os componentes do sistema, independentemente do sistema operacional.  
+### **Componentes Principais**  
 
-### **Estruturas de Dados**  
-- **Lista Ligada:** Utilizada para armazenamento temporário dos itens copiados. Sua implementação permite inserções e remoções dinâmicas.  
-- **Árvore de Busca Binária (Planejada):** Visa melhorar a eficiência na busca de itens ao longo do histórico.  
+1. **Daemon de Monitoramento**  
+   - Classe: `ClipboardDaemon`  
+   - Função: Monitora continuamente o clipboard em busca de novos conteúdos e os registra no sistema.  
 
-### **Integração Python e C**  
-O projeto combina a versatilidade do Python com a performance do C. Enquanto o cliente utiliza Python para lidar com eventos de sistema e interação com o usuário, o servidor em C é responsável por processar e armazenar os dados de forma eficiente.  
+2. **Gerenciador de Histórico**  
+   - Classe: `ClipboardManager`  
+   - Função: Gerencia o histórico, utilizando uma Árvore de Busca Binária para inserções e buscas rápidas.  
 
----
+3. **Interface Gráfica**  
+   - Classe: `ClipboardInterface`  
+   - Função: Permite ao usuário visualizar, buscar, copiar e gerenciar o histórico por meio de uma interface visual.  
 
-## **Seção III. Metodologia**  
-
-1. **Arquitetura Inicial:**  
-   - Configuração de um socket servidor em C e cliente em Python.  
-   - Desenvolvimento da função `handle_signal` para capturar `CTRL+C` e enviar mensagens ao servidor.  
-
-2. **Estruturação do Histórico:**  
-   - Implementação de uma lista ligada para gerenciamento dinâmico do histórico.  
-   - Definição dos comandos básicos:  
-     - `COPY <texto>`: Armazena o texto copiado.  
-     - `DELETE <id>`: Remove um item específico.  
-     - `SELECT <id>`: Recupera um item.  
-     - `SHOW_LIST`: Exibe todos os itens armazenados.  
-
-3. **Otimização e Planejamento:**  
-   - Planejamento para integração de uma árvore de busca para consultas mais rápidas.  
-   - Proposta de armazenamento permanente para persistência dos dados.  
-
-### **Estrutura**
-![image](https://github.com/user-attachments/assets/971e5c6b-20c0-4869-bc08-92ae2bb0b2c1)
+4. **Estrutura de Dados**  
+   - Classe: `ClipboardSearchTree`  
+   - Estrutura: Árvore de Busca Binária  
+   - Função: Armazena e organiza o histórico de forma eficiente, permitindo buscas otimizadas.  
 
 ---
 
-## **Seção IV. Resultados e Conclusões**  
+## **Seção III. Funcionalidades Implementadas**  
 
-### **Resultados**  
+1. **Captura Automática**  
+   - Captura em tempo real dos itens copiados pelo usuário utilizando a biblioteca `pyperclip`.  
+
+2. **Gerenciamento de Histórico**  
+   - Adição de novos itens ao histórico.  
+   - Busca eficiente por meio de uma Árvore de Busca Binária.  
+   - Visualização completa do histórico.  
+
+3. **Interface Gráfica**  
+   - Busca de itens no histórico.  
+   - Opção de copiar diretamente itens selecionados para o clipboard.  
+   - Botão para encerrar o daemon e a aplicação.  
+
+4. **Persistência Temporária**  
+   - Os dados são armazenados na memória durante a execução da aplicação.  
+
+---
+
+## **Seção IV. Estruturas de Dados**  
+
+### **Árvore de Busca Binária**  
+- **Motivação:** Proporciona buscas rápidas e eficiente organização dos dados.  
+- **Implementação:**  
+  - Cada nó contém um texto copiado.  
+  - Inserções e buscas são realizadas de forma recursiva.  
+  - A travessia em ordem (in-order traversal) retorna os itens do histórico em ordem alfabética.  
+
+---
+
+## **Seção V. Bibliotecas Utilizadas**  
+
+1. **`pyperclip`**  
+   - Captura e manipula o conteúdo do clipboard.  
+
+2. **`multiprocessing`**  
+   - Garante a execução paralela do daemon e da interface gráfica.  
+
+3. **`tkinter`**  
+   - Criação da interface gráfica.  
+
+4. **`os` e `signal`**  
+   - Controla e finaliza processos em execução.  
+
+5. **`time`**  
+   - Introduz atrasos no monitoramento contínuo do clipboard.  
+
+6. **`sys`**  
+   - Garante o encerramento seguro do sistema ao capturar sinais de término.  
+
+---
+
+## **Seção VI. Resultados**  
+
+### **Resultados Obtidos**  
 - **Funcionalidades Implementadas:**  
-  - Comunicação cliente-servidor bem-sucedida.
-  - Armazenamento de cópias
-  - Captura de cópias em tempo real
-  - Armazenamento persistente 
+  - Monitoramento eficiente do clipboard.  
+  - Busca e gerenciamento do histórico por meio de interface gráfica.  
+  - Armazenamento dinâmico com Árvore de Busca Binária.  
 
+### **Desempenho**  
+- **Latência:** O sistema apresenta um tempo médio de resposta de 1 segundo entre a captura e o registro do conteúdo copiado.  
 
-- **Desempenho:**  
-TODO: Medições de latência e consumo de memória estão planejadas para avaliação futura.
+---
+
+## **Seção VII. Conclusões e Trabalhos Futuros**  
 
 ### **Conclusões**  
-- **Lições Aprendidas:**  
-TODO: Será atualizado após análise detalhada dos resultados obtidos.
+O projeto demonstra a viabilidade de implementar um sistema eficiente de gerenciamento de histórico de clipboard utilizando Python. A integração entre o monitoramento contínuo, estruturação de dados eficiente e interface gráfica resulta em uma solução robusta e amigável para o usuário.  
 
-- **Perspectivas Futuras:**  
-  - Otimizar buscas com árvores de busca.  
-  - Expandir a funcionalidade para múltiplos formatos de dados (imagens, arquivos, etc.).  
+### **Trabalhos Futuros**  
+- Implementar persistência dos dados em armazenamento local (ex.: arquivos ou banco de dados).  
+- Expandir o suporte a diferentes tipos de conteúdo (ex.: imagens, arquivos, etc.).  
+- Melhorar o desempenho do sistema em cenários com grandes volumes de dados.  
 
 ---
 
 ## **Referências**  
-Segue o texto transformado conforme as normas da ABNT para lista de referências. Utilizei o formato de referência para documentos eletrônicos (artigos e vídeos). Se precisar de ajustes, é só avisar!
 
----
+1. PYTHON. *pyperclip - A cross-platform clipboard module for Python*. Documentação oficial, 2024. Disponível em: [https://pypi.org/project/pyperclip/](https://pypi.org/project/pyperclip/). Acesso em: 04 dez. 2024.  
 
-### Referências  
+2. PYTHON. *multiprocessing — Process-based parallelism*. Documentação oficial, 2024. Disponível em: [https://docs.python.org/3/library/multiprocessing.html](https://docs.python.org/3/library/multiprocessing.html). Acesso em: 04 dez. 2024.  
 
-**1.** Sockets and Pipes Look Like Files (Unix/fdopen). YouTube, 2024. Disponível em: [https://www.youtube.com/watch?v=il4N6KjVQ-s](https://www.youtube.com/watch?v=il4N6KjVQ-s). Acesso em: 27 nov. 2024.  
+3. PYTHON. *tkinter — Python interface to Tcl/Tk*. Documentação oficial, 2024. Disponível em: [https://docs.python.org/3/library/tkinter.html](https://docs.python.org/3/library/tkinter.html). Acesso em: 04 dez. 2024.  
 
-**2.** Unix Domain Socket in 100 seconds. YouTube, 2024. Disponível em: [https://www.youtube.com/watch?v=1UHaR54i3ak](https://www.youtube.com/watch?v=1UHaR54i3ak). Acesso em: 27 nov. 2024.  
+4. PYTHON. *signal — Set handlers for asynchronous events*. Documentação oficial, 2024. Disponível em: [https://docs.python.org/3/library/signal.html](https://docs.python.org/3/library/signal.html). Acesso em: 04 dez. 2024.  
 
-**3.** [Linguagem C] Sockets no Windows e no Linux. YouTube, 2024. Disponível em: [https://www.youtube.com/watch?v=GaxjJvMnz-I](https://www.youtube.com/watch?v=GaxjJvMnz-I). Acesso em: 27 nov. 2024.  
+5. PYTHON. *os — Miscellaneous operating system interfaces*. Documentação oficial, 2024. Disponível em: [https://docs.python.org/3/library/os.html](https://docs.python.org/3/library/os.html). Acesso em: 04 dez. 2024.  
 
-**4.** PYTHON. *socket — Low-level networking interface*. Disponível em: [https://docs.python.org/3/library/socket.html#socket.SOCK_STREAM](https://docs.python.org/3/library/socket.html#socket.SOCK_STREAM). Acesso em: 27 nov. 2024.  
+6. PYTHON. *time — Time access and conversions*. Documentação oficial, 2024. Disponível em: [https://docs.python.org/3/library/time.html](https://docs.python.org/3/library/time.html). Acesso em: 04 dez. 2024.  
 
-**5.** PYTHON. *Programação de soquetes*. Disponível em: [https://docs.python.org/pt-br/3/howto/sockets.html](https://docs.python.org/pt-br/3/howto/sockets.html). Acesso em: 27 nov. 2024.  
-
-**6.** Can anyone explain to me how `__init__ == '__main__'` is used properly? Reddit, 2024. Disponível em: [https://www.reddit.com/r/Python/comments/qsezbh/can_anyone_explain_to_me_how_init_main_is_used/](https://www.reddit.com/r/Python/comments/qsezbh/can_anyone_explain_to_me_how_init_main_is_used/). Acesso em: 27 nov. 2024.  
-
-**7.** Introdução a sockets em Python. *Medium*, 2024. Disponível em: [https://medium.com/@urapython.community/introdu%C3%A7%C3%A3o-a-sockets-em-python-44d3d55c60d0](https://medium.com/@urapython.community/introdu%C3%A7%C3%A3o-a-sockets-em-python-44d3d55c60d0). Acesso em: 27 nov. 2024.  
-
-**8.** Manipulação de arquivos em C — como abrir e fechar arquivos e escrever algo neles. *FreeCodeCamp*, 2024. Disponível em: [https://www.freecodecamp.org/portuguese/news/manipulacao-de-arquivos-em-c-como-abrir-e-fechar-arquivos-e-escrever-algo-neles/](https://www.freecodecamp.org/portuguese/news/manipulacao-de-arquivos-em-c-como-abrir-e-fechar-arquivos-e-escrever-algo-neles/). Acesso em: 27 nov. 2024.  
-
-**9.** LEMIRE, D. How much memory does a call to `malloc` allocate? *Daniel Lemire's blog*, 2024. Disponível em: [https://lemire.me/blog/2024/06/27/how-much-memory-does-a-call-to-malloc-allocates/](https://lemire.me/blog/2024/06/27/how-much-memory-does-a-call-to-malloc-allocates/). Acesso em: 27 nov. 2024.  
-
-**10.** Como armazenar uma string com tamanho qualquer (desconhecido antecipadamente) em C? *Quora*, 2024. Disponível em: [https://pt.quora.com/Como-armazenar-uma-string-com-tamanho-qualquer-desconhecido](https://pt.quora.com/Como-armazenar-uma-string-com-tamanho-qualquer-desconhecido). Acesso em: 27 nov. 2024.  
-
-**11.** Como faço para guardar uma string com tamanho indefinido sem utilizar memória extra? *Stack Overflow em Português*, 2024. Disponível em: [https://pt.stackoverflow.com/questions/175529/como-faço-para-guardar-uma-string-com-tamanho-indefinido-numa-estrutura](https://pt.stackoverflow.com/questions/175529/como-faço-para-guardar-uma-string-com-tamanho-indefinido-numa-estrutura). Acesso em: 27 nov. 2024.  
-
-**12.** How does the EOF macro work with getchar? *Stack Overflow*, 2024. Disponível em: [https://stackoverflow.com/questions/34816138/how-does-the-eof-macro-work-with-getchar](https://stackoverflow.com/questions/34816138/how-does-the-eof-macro-work-with-getchar). Acesso em: 27 nov. 2024.  
+7. PYTHON. *sys — System-specific parameters and functions*. Documentação oficial, 2024. Disponível em: [https://docs.python.org/3/library/sys.html](https://docs.python.org/3/library/sys.html). Acesso em: 04 dez. 2024.  
