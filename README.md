@@ -128,6 +128,7 @@ O projeto demonstra a viabilidade de implementar um sistema eficiente de gerenci
 - Implementar persistência dos dados em armazenamento local (ex.: arquivos ou banco de dados).  
 - Expandir o suporte a diferentes tipos de conteúdo (ex.: imagens, arquivos, etc.).  
 - Melhorar o desempenho do sistema em cenários com grandes volumes de dados.  
+- Melhorar o refresh para um refresh automático
 
 ---
 
@@ -146,3 +147,9 @@ O projeto demonstra a viabilidade de implementar um sistema eficiente de gerenci
 6. PYTHON. *time — Time access and conversions*. Documentação oficial, 2024. Disponível em: [https://docs.python.org/3/library/time.html](https://docs.python.org/3/library/time.html). Acesso em: 04 dez. 2024.  
 
 7. PYTHON. *sys — System-specific parameters and functions*. Documentação oficial, 2024. Disponível em: [https://docs.python.org/3/library/sys.html](https://docs.python.org/3/library/sys.html). Acesso em: 04 dez. 2024.  
+
+---
+
+#### **Como rodar o projeto**
+
+O codigo principal está na pasta src
