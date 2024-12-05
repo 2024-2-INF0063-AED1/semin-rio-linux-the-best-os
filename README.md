@@ -152,4 +152,47 @@ O projeto demonstra a viabilidade de implementar um sistema eficiente de gerenci
 
 #### **Como rodar o projeto**
 
-O codigo principal está na pasta src
+O código principal está localizado na pasta `src`. Para executar o projeto, siga os passos abaixo:
+
+**Pré-requisitos**
+
+Para executar este projeto, você precisará dos seguintes componentes:
+
+  * **Python:** A linguagem de programação Python, na versão 3.6 ou superior. Você pode baixá-la e instalá-la gratuitamente em [https://www.python.org/](https://www.google.com/url?sa=E&source=gmail&q=https://www.python.org/).
+  * **Bibliotecas:**
+      * **pyperclip:** Essa biblioteca permite que o programa interaja com a área de transferência do sistema operacional, permitindo copiar e colar texto.
+      * **multiprocessing:** Essa biblioteca é utilizada para criar e gerenciar processos, permitindo que o programa execute tarefas em paralelo.
+      * **tkinter:** Essa biblioteca é a biblioteca padrão do Python para criar interfaces gráficas.
+      * **os, signal, time e sys:** Essas bibliotecas fornecem funcionalidades básicas para interagir com o sistema operacional, como manipular arquivos, tratar sinais e controlar o fluxo do programa.
+
+**Instalação das bibliotecas:**
+Após instalar o Python, abra o terminal (ou prompt de comando) e execute o seguinte comando:
+
+```bash
+pip install pyperclip multiprocessing tkinter os signal time sys
+```
+
+O comando `pip` é o gerenciador de pacotes do Python e será utilizado para instalar todas as bibliotecas necessárias de uma só vez.
+
+**Rodando o projeto:**
+
+1. **Clone o repositório:**
+   ```bash
+   git clone https://seu_repositorio.git
+   ```
+2. **Acesse o diretório do projeto:**
+   ```bash
+   cd semin-rio-linux-the-best-os
+   ```
+3. **Ative o ambiente virtual (se estiver usando):**
+   ```bash
+   # Linux/macOS:
+   source venv/bin/activate
+   # Windows:
+   venv\Scripts\activate
+   ```
+4. **Execute o script principal:**
+   ```bash
+   python src/main.py
+   ```
+
